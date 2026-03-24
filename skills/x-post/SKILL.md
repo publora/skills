@@ -25,7 +25,8 @@ Create and schedule posts to X (Twitter) using the Publora MCP server. Supports 
 {
   "mcpServers": {
     "publora": {
-      "url": "https://mcp.publora.com/sse",
+      "type": "http",
+      "url": "https://mcp.publora.com",
       "headers": {
         "Authorization": "Bearer YOUR_API_KEY"
       }

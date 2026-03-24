@@ -22,7 +22,8 @@ Upload and schedule videos to TikTok using the Publora MCP server. Supports priv
 {
   "mcpServers": {
     "publora": {
-      "url": "https://mcp.publora.com/sse",
+      "type": "http",
+      "url": "https://mcp.publora.com",
       "headers": {
         "Authorization": "Bearer YOUR_API_KEY"
       }

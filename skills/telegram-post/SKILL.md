@@ -29,7 +29,8 @@ Create and schedule posts to Telegram channels and groups using the Publora MCP 
 {
   "mcpServers": {
     "publora": {
-      "url": "https://mcp.publora.com/sse",
+      "type": "http",
+      "url": "https://mcp.publora.com",
       "headers": {
         "Authorization": "Bearer YOUR_API_KEY"
       }

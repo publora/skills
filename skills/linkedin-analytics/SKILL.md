@@ -22,7 +22,8 @@ Get detailed analytics for your LinkedIn posts and profile using the Publora MCP
 {
   "mcpServers": {
     "publora": {
-      "url": "https://mcp.publora.com/sse",
+      "type": "http",
+      "url": "https://mcp.publora.com",
       "headers": {
         "Authorization": "Bearer YOUR_API_KEY"
       }

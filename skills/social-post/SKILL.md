@@ -25,7 +25,8 @@ Create and schedule posts to YouTube, Facebook Pages, and Mastodon using the Pub
 {
   "mcpServers": {
     "publora": {
-      "url": "https://mcp.publora.com/sse",
+      "type": "http",
+      "url": "https://mcp.publora.com",
       "headers": {
         "Authorization": "Bearer YOUR_API_KEY"
       }

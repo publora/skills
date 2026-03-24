@@ -38,7 +38,8 @@ Add to your Claude Desktop config (`~/.claude/claude_desktop_config.json`):
 {
   "mcpServers": {
     "publora": {
-      "url": "https://mcp.publora.com/sse",
+      "type": "http",
+      "url": "https://mcp.publora.com",
       "headers": {
         "Authorization": "Bearer YOUR_API_KEY"
       }
