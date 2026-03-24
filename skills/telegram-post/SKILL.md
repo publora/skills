@@ -9,7 +9,22 @@ Create and schedule posts to Telegram channels and groups using the Publora MCP 
 
 ## Prerequisites
 
-Connect Publora MCP server in your Claude Desktop config:
+**Plans:** Pro ($2.99/account/month) or Premium required. Telegram is NOT available on the free Starter plan.
+
+### Getting Started
+
+1. **Create account** at [publora.com/register](https://publora.com/register)
+2. **Upgrade to Pro** at [publora.com/settings/billing](https://publora.com/settings/billing) - Telegram requires a paid plan
+3. **Create Telegram bot:**
+   - Message [@BotFather](https://t.me/BotFather) on Telegram
+   - Send `/newbot` and follow instructions
+   - Save the bot token
+4. **Add bot to your channel:**
+   - Add the bot as **administrator** to your channel/group
+   - Grant `can_post_messages` permission
+5. **Connect in Publora** at [Dashboard](https://publora.com/dashboard) with bot token and channel name
+6. **Get API key** at [publora.com/settings/api](https://publora.com/settings/api)
+7. **Configure MCP** in Claude Desktop (`~/.claude/claude_desktop_config.json`):
 
 ```json
 {
@@ -24,12 +39,12 @@ Connect Publora MCP server in your Claude Desktop config:
 }
 ```
 
-Get your API key at [publora.com/settings/api](https://publora.com/settings/api)
+### Plan Limits
 
-**Additional setup:**
-1. Create a bot with [@BotFather](https://t.me/BotFather) on Telegram
-2. Add the bot as **administrator** to your channel/group with `can_post_messages` permission
-3. Connect in Publora dashboard with bot token and channel name
+| Plan | Posts/month | Price |
+|------|-------------|-------|
+| Pro | 100/account | $2.99/account/month |
+| Premium | 500/account | $9.99/account/month |
 
 ## Platform Limits (Bot API)
 

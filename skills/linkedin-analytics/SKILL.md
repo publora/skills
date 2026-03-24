@@ -9,7 +9,14 @@ Get detailed analytics for your LinkedIn posts and profile using the Publora MCP
 
 ## Prerequisites
 
-Connect Publora MCP server in your Claude Desktop config:
+**Plans:** Starter (free), Pro, Premium - LinkedIn is available on all plans including free.
+
+### Getting Started
+
+1. **Create account** at [publora.com/register](https://publora.com/register) (free)
+2. **Connect LinkedIn** via OAuth in [Publora Dashboard](https://publora.com/dashboard)
+3. **Get API key** at [publora.com/settings/api](https://publora.com/settings/api)
+4. **Configure MCP** in Claude Desktop (`~/.claude/claude_desktop_config.json`):
 
 ```json
 {
@@ -23,8 +30,6 @@ Connect Publora MCP server in your Claude Desktop config:
   }
 }
 ```
-
-Get your API key at [publora.com/settings/api](https://publora.com/settings/api)
 
 ## Analytics Tools
 

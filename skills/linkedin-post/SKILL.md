@@ -9,7 +9,14 @@ Create and schedule LinkedIn posts using the Publora MCP server. Supports text p
 
 ## Prerequisites
 
-Connect Publora MCP server in your Claude Desktop config:
+**Plans:** Starter (free), Pro, Premium - LinkedIn is available on all plans including free.
+
+### Getting Started
+
+1. **Create account** at [publora.com/register](https://publora.com/register) (free)
+2. **Connect LinkedIn** via OAuth in [Publora Dashboard](https://publora.com/dashboard)
+3. **Get API key** at [publora.com/settings/api](https://publora.com/settings/api)
+4. **Configure MCP** in Claude Desktop (`~/.claude/claude_desktop_config.json`):
 
 ```json
 {
@@ -24,7 +31,13 @@ Connect Publora MCP server in your Claude Desktop config:
 }
 ```
 
-Get your API key at [publora.com/settings/api](https://publora.com/settings/api)
+### Plan Limits
+
+| Plan | Posts/month | Price |
+|------|-------------|-------|
+| Starter | 15 | Free |
+| Pro | 100/account | $2.99/account/month |
+| Premium | 500/account | $9.99/account/month |
 
 ## Platform Limits
 

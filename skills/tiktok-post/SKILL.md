@@ -9,7 +9,15 @@ Upload and schedule videos to TikTok using the Publora MCP server. Supports priv
 
 ## Prerequisites
 
-Connect Publora MCP server in your Claude Desktop config:
+**Plans:** Pro ($2.99/account/month) or Premium required. TikTok is NOT available on the free Starter plan.
+
+### Getting Started
+
+1. **Create account** at [publora.com/register](https://publora.com/register)
+2. **Upgrade to Pro** at [publora.com/settings/billing](https://publora.com/settings/billing) - TikTok requires a paid plan
+3. **Connect TikTok** via OAuth in [Publora Dashboard](https://publora.com/dashboard)
+4. **Get API key** at [publora.com/settings/api](https://publora.com/settings/api)
+5. **Configure MCP** in Claude Desktop (`~/.claude/claude_desktop_config.json`):
 
 ```json
 {
@@ -24,9 +32,12 @@ Connect Publora MCP server in your Claude Desktop config:
 }
 ```
 
-Get your API key at [publora.com/settings/api](https://publora.com/settings/api)
+### Plan Limits
 
-**Important:** TikTok account must be connected via OAuth in Publora dashboard.
+| Plan | Posts/month | Price |
+|------|-------------|-------|
+| Pro | 100/account | $2.99/account/month |
+| Premium | 500/account | $9.99/account/month |
 
 ## Platform Limits (API vs Native App)
 
