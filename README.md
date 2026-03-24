@@ -10,13 +10,13 @@ Sign up for free at [publora.com/register](https://publora.com/register)
 
 ### Step 2: Choose Your Plan
 
-| Plan | Price | Posts | Platforms | Best For |
-|------|-------|-------|-----------|----------|
-| **Starter** | Free forever | 15/month | LinkedIn, Bluesky only | Trying it out |
-| **Pro** | $2.99/account/month | 100/account | All 10 platforms | Regular posting |
-| **Premium** | $9.99/account/month | 500/account | All 10 platforms | Heavy usage |
+| Plan | Price | Posts | Platforms |
+|------|-------|-------|-----------|
+| **Starter** | Free forever | 15/month | All platforms except X/Twitter |
+| **Pro** | $2.99/account/month | 100/account | All 10 platforms |
+| **Premium** | $9.99/account/month | 500/account | All 10 platforms |
 
-**Important:** Free Starter plan only supports LinkedIn and Bluesky. For Instagram, TikTok, Threads, Telegram, X/Twitter, YouTube, Facebook, or Mastodon, you need Pro or Premium.
+**Note:** X/Twitter requires Pro or Premium plan. All other platforms work on free Starter.
 
 ### Step 3: Connect Your Social Accounts
 
@@ -69,19 +69,19 @@ Analyze LinkedIn performance - engagement, followers, reactions, comments.
 
 ### [threads-post](./skills/threads-post/SKILL.md)
 Post to Meta's Threads with auto-threading and carousels.
-**Plans:** Pro, Premium (not available on free Starter)
+**Plans:** Free (15/month), Pro, Premium
 
 ### [telegram-post](./skills/telegram-post/SKILL.md)
 Post to Telegram channels with markdown and media support.
-**Plans:** Pro, Premium (not available on free Starter)
+**Plans:** Free (15/month), Pro, Premium
 
 ### [instagram-post](./skills/instagram-post/SKILL.md)
 Post to Instagram with images, carousels, Reels, Stories. Business account required.
-**Plans:** Pro, Premium (not available on free Starter)
+**Plans:** Free (15/month), Pro, Premium
 
 ### [tiktok-post](./skills/tiktok-post/SKILL.md)
 Upload videos to TikTok with privacy and interaction controls.
-**Plans:** Pro, Premium (not available on free Starter)
+**Plans:** Free (15/month), Pro, Premium
 
 ## Platform Support by Plan
 
@@ -89,19 +89,24 @@ Upload videos to TikTok with privacy and interaction controls.
 |----------|----------------|-----|---------|
 | LinkedIn | Yes | Yes | Yes |
 | Bluesky | Yes | Yes | Yes |
-| Threads | - | Yes | Yes |
-| Instagram | - | Yes | Yes |
-| TikTok | - | Yes | Yes |
-| X/Twitter | - | Yes | Yes |
-| Telegram | - | Yes | Yes |
-| YouTube | - | Yes | Yes |
-| Facebook | - | Yes | Yes |
-| Mastodon | - | Yes | Yes |
+| Threads | Yes | Yes | Yes |
+| Instagram | Yes | Yes | Yes |
+| TikTok | Yes | Yes | Yes |
+| **X/Twitter** | **No** | Yes | Yes |
+| Telegram | Yes | Yes | Yes |
+| YouTube | Yes | Yes | Yes |
+| Facebook | Yes | Yes | Yes |
+| Mastodon | Yes | Yes | Yes |
+
+Free Starter plan: 15 posts/month across all platforms (except X/Twitter which requires Pro).
 
 ## Pricing FAQ
 
 **Can I try for free?**
-Yes! Starter plan is free forever with 15 posts/month. Perfect for trying Publora with LinkedIn or Bluesky.
+Yes! Starter plan is free forever with 15 posts/month on all platforms except X/Twitter.
+
+**What about X/Twitter?**
+X/Twitter requires Pro plan ($2.99/account/month) due to Twitter API costs.
 
 **What happens when I exceed my post limit?**
 You'll see a message that you've reached your monthly limit. Upgrade to Pro or wait for the next billing cycle.

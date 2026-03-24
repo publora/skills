@@ -9,13 +9,12 @@ Create and schedule posts to Telegram channels and groups using the Publora MCP 
 
 ## Prerequisites
 
-**Plans:** Pro ($2.99/account/month) or Premium required. Telegram is NOT available on the free Starter plan.
+**Plans:** Free Starter (15 posts/month), Pro, Premium
 
 ### Getting Started
 
-1. **Create account** at [publora.com/register](https://publora.com/register)
-2. **Upgrade to Pro** at [publora.com/settings/billing](https://publora.com/settings/billing) - Telegram requires a paid plan
-3. **Create Telegram bot:**
+1. **Create account** at [publora.com/register](https://publora.com/register) (free)
+2. **Create Telegram bot:**
    - Message [@BotFather](https://t.me/BotFather) on Telegram
    - Send `/newbot` and follow instructions
    - Save the bot token
@@ -43,6 +42,7 @@ Create and schedule posts to Telegram channels and groups using the Publora MCP 
 
 | Plan | Posts/month | Price |
 |------|-------------|-------|
+| Starter | 15 | Free |
 | Pro | 100/account | $2.99/account/month |
 | Premium | 500/account | $9.99/account/month |
 

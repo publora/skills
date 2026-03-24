@@ -9,16 +9,15 @@ Create and schedule Instagram posts using the Publora MCP server. Supports image
 
 ## Prerequisites
 
-**Plans:** Pro ($2.99/account/month) or Premium required. Instagram is NOT available on the free Starter plan.
+**Plans:** Free Starter (15 posts/month), Pro, Premium
 
 ### Getting Started
 
-1. **Create account** at [publora.com/register](https://publora.com/register)
-2. **Upgrade to Pro** at [publora.com/settings/billing](https://publora.com/settings/billing) - Instagram requires a paid plan
-3. **Convert to Business account** in Instagram settings (Personal and Creator accounts are NOT supported by the API)
-4. **Connect Instagram** via OAuth in [Publora Dashboard](https://publora.com/dashboard)
-5. **Get API key** at [publora.com/settings/api](https://publora.com/settings/api)
-6. **Configure MCP** in Claude Desktop (`~/.claude/claude_desktop_config.json`):
+1. **Create account** at [publora.com/register](https://publora.com/register) (free)
+2. **Convert to Business account** in Instagram settings (Personal and Creator accounts are NOT supported by the API)
+3. **Connect Instagram** via OAuth in [Publora Dashboard](https://publora.com/dashboard)
+4. **Get API key** at [publora.com/settings/api](https://publora.com/settings/api)
+5. **Configure MCP** in Claude Desktop (`~/.claude/claude_desktop_config.json`):
 
 ```json
 {
@@ -37,6 +36,7 @@ Create and schedule Instagram posts using the Publora MCP server. Supports image
 
 | Plan | Posts/month | Price |
 |------|-------------|-------|
+| Starter | 15 | Free |
 | Pro | 100/account | $2.99/account/month |
 | Premium | 500/account | $9.99/account/month |
 
