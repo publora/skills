@@ -13,6 +13,8 @@ npx skills add publora/skills --skill linkedin-post
 npx skills add publora/skills --skill linkedin-analytics
 npx skills add publora/skills --skill threads-post
 npx skills add publora/skills --skill telegram-post
+npx skills add publora/skills --skill instagram-post
+npx skills add publora/skills --skill tiktok-post
 ```
 
 ## Available Skills
@@ -28,6 +30,12 @@ Post to Meta's Threads with auto-threading for long content, carousels, and sche
 
 ### [telegram-post](./skills/telegram-post/SKILL.md)
 Post to Telegram channels and groups with markdown formatting, media support, and silent posting options.
+
+### [instagram-post](./skills/instagram-post/SKILL.md)
+Post to Instagram with images, carousels, Reels, and Stories. Business account required. JPEG images only (PNG not supported by API).
+
+### [tiktok-post](./skills/tiktok-post/SKILL.md)
+Upload videos to TikTok with privacy controls and interaction settings. Video-only platform with extensive platformSettings.
 
 ## Prerequisites
 
