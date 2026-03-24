@@ -1,11 +1,11 @@
 ---
 name: linkedin-post
-description: Create, schedule, and manage LinkedIn posts with AI assistance via Publora MCP
+description: Create and schedule LinkedIn posts with text, images, videos, and documents via Publora MCP
 ---
 
 # LinkedIn Post
 
-Create and schedule LinkedIn posts using the Publora MCP server. Supports text posts, images, videos, documents, and carousels.
+Create and schedule LinkedIn posts using the Publora MCP server. Supports text posts, single images, multi-image posts (grid layout), videos, and PDF documents.
 
 ## Prerequisites
 
@@ -26,78 +26,106 @@ Connect Publora MCP server in your Claude Desktop config:
 
 Get your API key at [publora.com/settings/api](https://publora.com/settings/api)
 
+## Platform Limits
+
+| Feature | Limit |
+|---------|-------|
+| Characters | 3,000 max |
+| Visible before "see more" | First 210 characters |
+| Images | Up to 10 (grid layout, not swipeable carousel) |
+| Image size | 5 MB max |
+| Image formats | JPEG, PNG, GIF, WebP (WebP auto-converted) |
+| Video duration | 30 minutes |
+| Video size | 500 MB max |
+| Video format | MP4 only |
+
 ## Available Tools
 
 ### create_post
-Create a new post for LinkedIn (or schedule for later).
+Create a new LinkedIn post or schedule for later.
 
 **Parameters:**
-- `platform`: "linkedin"
-- `content`: Post text (up to 3,000 characters for LinkedIn)
-- `scheduled_at` (optional): ISO 8601 datetime for scheduling
-- `media_ids` (optional): Array of uploaded media IDs
+- `platforms`: Array including your LinkedIn connection ID (e.g., `["linkedin-abc123"]`)
+- `content`: Post text (up to 3,000 characters)
+- `scheduledTime`: ISO 8601 datetime (required for MCP)
 
 ### get_upload_url
-Get a presigned URL to upload media (images, videos, documents).
+Get a presigned URL to upload media.
 
 **Parameters:**
-- `filename`: Name of the file (e.g., "chart.png")
-- `content_type`: MIME type (e.g., "image/png", "video/mp4", "application/pdf")
+- `postGroupId`: The post ID to attach media to
+- `fileName`: File name (e.g., "chart.png")
+- `contentType`: MIME type (e.g., "image/jpeg", "video/mp4", "application/pdf")
+- `type`: "image" or "video"
 
-### list_posts
-List your scheduled and published posts.
+### list_posts / update_post / delete_post
+Manage your scheduled and draft posts.
 
-**Parameters:**
-- `platform` (optional): Filter by "linkedin"
-- `status` (optional): "scheduled", "published", "draft"
+## Mentioning People and Companies
 
-### update_post
-Update a scheduled post before it's published.
+LinkedIn posts support @mentions using URN syntax:
 
-### delete_post
-Delete a scheduled or draft post.
+```
+@{urn:li:person:MEMBER_ID|Display Name}       # Mention a person
+@{urn:li:organization:ORG_ID|Company Name}    # Mention a company
+```
+
+**Example:**
+```
+Great insights from @{urn:li:person:4986615|Serge Bulaev} at @{urn:li:organization:107107343|Creative Content Crafts Inc}!
+```
+
+**Important:** The display name must exactly match the LinkedIn profile name (case-sensitive), including company suffixes like "Inc", "LLC", etc.
+
+## Important API Restrictions
+
+1. **No organic carousels**: Swipeable multi-image carousels are NOT available via API (only for sponsored content). Multi-image posts appear as a grid layout.
+
+2. **No mixed media**: Cannot combine images with videos or documents in the same post.
+
+3. **No rich text**: LinkedIn API does not support bold, italic, or other formatting. Use plain text or Unicode characters for emphasis.
+
+4. **PDF alternative for carousels**: To share multi-page swipeable content, upload a PDF document instead.
 
 ## Examples
 
 ### Simple Text Post
 ```
-Create a LinkedIn post announcing our new product launch:
-"We're thrilled to announce the release of our AI writing assistant..."
+Schedule a LinkedIn post for tomorrow at 9 AM:
+"We're thrilled to announce the release of our AI writing assistant. After 18 months of development, we're ready to help teams write better content faster."
 ```
 
-### Post with Image
+### Post with Mention
 ```
-1. First, upload the image using get_upload_url
-2. Then create the post with the media_id
-```
-
-### Schedule a Post
-```
-Schedule this LinkedIn post for tomorrow at 9 AM EST:
-"5 lessons learned from scaling our startup to 100 employees..."
+Create a LinkedIn post mentioning our CEO:
+"Excited to share insights from @{urn:li:person:4986615|Serge Bulaev} on the future of AI in content creation."
 ```
 
-### Carousel Post
-Upload multiple images and include all media_ids in the create_post call.
+### Multi-Image Post
+```
+Create a LinkedIn post with 4 product screenshots showing our new dashboard features.
+```
+Note: Images will appear in a grid layout, not as a swipeable carousel.
+
+### PDF Document Post
+```
+Share our Q4 report as a PDF on LinkedIn with a summary caption.
+```
+This is the best way to share multi-page carousel-like content.
 
 ## Best Practices
 
-1. **Optimal posting times**: Tuesday-Thursday, 8-10 AM or 12 PM in your audience's timezone
-2. **Character limits**: LinkedIn allows up to 3,000 characters, but posts under 1,300 perform better
-3. **Hashtags**: Use 3-5 relevant hashtags at the end of your post
-4. **First line hook**: Make the first 2 lines compelling - they appear before "see more"
-5. **Call to action**: End with a question or clear CTA to boost engagement
-
-## Supported Media Types
-
-| Type | Formats | Max Size |
-|------|---------|----------|
-| Image | JPG, PNG, GIF | 8 MB |
-| Video | MP4 | 200 MB, 10 min |
-| Document | PDF | 100 MB |
+1. **First line matters**: First 210 characters appear before "see more" - make them compelling
+2. **Optimal length**: Posts under 1,300 characters tend to perform better
+3. **Posting times**: Tuesday-Thursday, 8-10 AM in your audience's timezone
+4. **Hashtags**: Use 3-5 relevant hashtags - they're supported as plain text
+5. **Engagement**: End with a question to encourage comments
 
 ## Troubleshooting
 
-- **"Account not connected"**: Ensure your LinkedIn account is connected in Publora dashboard
-- **"Rate limited"**: LinkedIn limits posting frequency; wait before retrying
-- **"Media upload failed"**: Check file size and format against supported types
+| Error | Cause | Solution |
+|-------|-------|----------|
+| "Account not connected" | LinkedIn OAuth expired | Reconnect in Publora dashboard |
+| "MEDIA_ASSET_PROCESSING_FAILED" | File too large or wrong format | Check: images < 5 MB, videos < 500 MB MP4 |
+| "Rate limited" (429) | Too many API calls | Wait and retry with backoff |
+| "Cannot mix media types" | Images + video in same post | Use only one media type per post |

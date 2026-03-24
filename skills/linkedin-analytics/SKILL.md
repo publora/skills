@@ -1,11 +1,11 @@
 ---
 name: linkedin-analytics
-description: Analyze LinkedIn performance, track post engagement, and monitor follower growth via Publora MCP
+description: Analyze LinkedIn performance, track engagement metrics, and manage reactions/comments via Publora MCP
 ---
 
 # LinkedIn Analytics
 
-Get detailed analytics for your LinkedIn posts and profile using the Publora MCP server. Track engagement, monitor follower growth, and optimize your content strategy.
+Get detailed analytics for your LinkedIn posts and profile using the Publora MCP server. Track impressions, engagement, follower growth, and interact with posts through reactions and comments.
 
 ## Prerequisites
 
@@ -26,78 +26,89 @@ Connect Publora MCP server in your Claude Desktop config:
 
 Get your API key at [publora.com/settings/api](https://publora.com/settings/api)
 
-## Available Tools
+## Analytics Tools
 
 ### linkedin_post_stats
-Get detailed analytics for a specific LinkedIn post.
+Get engagement metrics for a specific LinkedIn post.
 
 **Parameters:**
-- `post_id`: The ID of the post to analyze
+- `postedId`: LinkedIn post URN (e.g., `urn:li:share:123456` or `urn:li:ugcPost:123456`)
+- `platformId`: Platform connection ID (e.g., `linkedin-abc123`)
+- `queryTypes` (optional): Metrics to fetch: `IMPRESSION`, `MEMBERS_REACHED`, `RESHARE`, `REACTION`, `COMMENT`
 
-**Returns:**
+**Response includes:**
 - Impressions (total views)
-- Unique impressions
-- Engagement rate
-- Reactions breakdown (likes, celebrates, supports, loves, insightful, funny)
+- Unique impressions (members reached)
+- Reactions count
 - Comments count
 - Shares/reposts
-- Click-through rate
+- Engagement rate
 
 ### linkedin_account_stats
-Get overall account performance metrics.
+Get aggregated statistics for your LinkedIn account.
 
 **Parameters:**
-- `period` (optional): Time range - "7d", "30d", "90d" (default: "30d")
-
-**Returns:**
-- Total impressions over period
-- Total engagements
-- Average engagement rate
-- Top performing posts
-- Posting frequency analysis
+- `platformId`: Platform connection ID
+- `queryTypes` (optional): Metrics to fetch
+- `aggregation` (optional): `DAILY` or `TOTAL` (default: TOTAL)
 
 ### linkedin_followers
-Get follower analytics and growth trends.
+Get follower count or growth over time.
 
 **Parameters:**
-- `period` (optional): Time range for growth analysis
-
-**Returns:**
-- Current follower count
-- Follower growth (net new followers)
-- Follower demographics (when available)
-- Growth rate percentage
+- `platformId`: Platform connection ID
+- `period` (optional): `lifetime` or `daily`
+- `dateRange` (optional): For daily period: `{start: {year, month, day}, end: {year, month, day}}`
 
 ### linkedin_profile_summary
-Get a summary of your LinkedIn profile performance.
+Get a combined profile overview with followers and stats.
 
-**Returns:**
-- Profile views
-- Search appearances
-- Post impressions summary
-- Connection/follower count
+**Parameters:**
+- `platformId`: Platform connection ID
+- `dateRange` (optional): Date range for stats
 
 ## Engagement Tools
 
 ### linkedin_create_reaction
-Add a reaction to a post.
+React to a LinkedIn post.
 
 **Parameters:**
-- `post_id`: Target post ID
-- `reaction_type`: "LIKE", "CELEBRATE", "SUPPORT", "LOVE", "INSIGHTFUL", "FUNNY"
+- `postedId`: LinkedIn post URN
+- `platformId`: Platform connection ID
+- `reactionType`: One of the following:
+
+| Type | Description |
+|------|-------------|
+| `LIKE` | Standard thumbs up |
+| `PRAISE` | Clapping hands / applause |
+| `EMPATHY` | Heart / love |
+| `INTEREST` | Lightbulb / insightful |
+| `APPRECIATION` | Supportive |
+| `ENTERTAINMENT` | Funny / laughing |
 
 ### linkedin_delete_reaction
 Remove your reaction from a post.
 
+**Parameters:**
+- `postedId`: LinkedIn post URN
+- `platformId`: Platform connection ID
+
 ### linkedin_create_comment
-Add a comment to a post.
+Post a comment on a LinkedIn post (max 1,250 characters).
 
 **Parameters:**
-- `post_id`: Target post ID
-- `text`: Comment content
+- `postedId`: LinkedIn post URN
+- `platformId`: Platform connection ID
+- `message`: Comment text (max 1,250 characters)
+- `parentComment` (optional): Comment URN for nested replies
 
 ### linkedin_delete_comment
 Remove a comment you made.
+
+**Parameters:**
+- `postedId`: LinkedIn post URN
+- `commentId`: Comment URN or numeric ID
+- `platformId`: Platform connection ID
 
 ## Example Prompts
 
@@ -111,49 +122,61 @@ Show me:
 4. Recommendations for improvement
 ```
 
-### Post-by-Post Analysis
+### Post Analysis
 ```
-Get detailed stats for my last 5 LinkedIn posts and identify
-patterns in what content resonates with my audience.
-```
-
-### Content Strategy Insights
-```
-Based on my LinkedIn analytics, what topics and posting times
-generate the highest engagement? Give me data-driven recommendations.
+Get detailed stats for my last 5 LinkedIn posts and identify patterns in what content resonates with my audience.
 ```
 
-### Engagement Analysis
+### Engagement Campaign
 ```
-Analyze the comments and reactions on my recent posts.
-What sentiment trends do you see? Who are my most engaged followers?
+React with PRAISE to my colleague's post about their promotion (urn:li:share:123456) and add a congratulatory comment.
 ```
 
-## Metrics Explained
+### Follower Tracking
+```
+Show my LinkedIn follower growth for the last 30 days. How many new followers did I gain each week?
+```
 
-| Metric | What It Measures | Why It Matters |
-|--------|------------------|----------------|
-| Impressions | Total times your content appeared in feeds | Reach and visibility |
-| Engagement Rate | (Reactions + Comments + Shares) / Impressions | Content quality signal |
-| Click-through Rate | Clicks on links or "see more" / Impressions | Call-to-action effectiveness |
-| Follower Growth | Net new followers over time | Audience building momentum |
+## Metrics Reference
 
-## Benchmarks
+| Metric | Description |
+|--------|-------------|
+| `IMPRESSION` | Total times content appeared in feeds |
+| `MEMBERS_REACHED` | Unique LinkedIn members who saw the post |
+| `RESHARE` | Number of reposts/shares |
+| `REACTION` | Total reactions (all types combined) |
+| `COMMENT` | Number of comments |
+
+## Engagement Rate Benchmarks
 
 **Average LinkedIn engagement rates by follower count:**
-- < 5K followers: 3-5% is good
-- 5K-50K followers: 2-3% is good
-- 50K+ followers: 1-2% is good
+
+| Followers | Good Engagement Rate |
+|-----------|---------------------|
+| < 5K | 3-5% |
+| 5K-50K | 2-3% |
+| 50K+ | 1-2% |
 
 **Good performing posts typically have:**
 - 2x your average impressions
-- Engagement rate above your baseline
 - Comment-to-reaction ratio above 10%
+- Engagement rate above your baseline
 
-## Tips for Better Analytics
+## Important Notes
 
-1. **Track consistently**: Review analytics weekly to spot trends
-2. **Compare similar content**: Group posts by topic/format for meaningful comparisons
-3. **Note external factors**: Events, holidays, and news can affect performance
-4. **Focus on engagement rate**: Raw numbers vary; rate shows quality
-5. **Watch for patterns**: Best days, times, topics, and formats for your audience
+1. **Analytics delay**: LinkedIn analytics may take up to 24 hours to fully populate. Querying immediately after posting returns partial data.
+
+2. **URN formats**: LinkedIn URLs use `urn:li:activity:xxx` but the API requires `urn:li:share:xxx` or `urn:li:ugcPost:xxx`. Use the `postedId` from Publora's `get_post` response for accurate URNs.
+
+3. **Caching**: Analytics responses may be cached. The response includes a `cached` field indicating if data came from cache.
+
+4. **Rate limits**: LinkedIn has approximately 200+ API calls per hour. Implement backoff on 429 errors.
+
+## Troubleshooting
+
+| Error | Cause | Solution |
+|-------|-------|----------|
+| "Platform ID not found" | Invalid connection ID | Run `list_connections` to get valid IDs |
+| "Post not found" | Wrong URN format | Use `urn:li:share:` or `urn:li:ugcPost:` format |
+| 429 Too Many Requests | Rate limited | Wait and retry with exponential backoff |
+| "message cannot exceed 1250 characters" | Comment too long | Shorten comment to under 1,250 chars |

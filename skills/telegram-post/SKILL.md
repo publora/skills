@@ -1,11 +1,11 @@
 ---
 name: telegram-post
-description: Post to Telegram channels and groups with markdown formatting and media via Publora MCP
+description: Post to Telegram channels and groups with markdown formatting, media support, and message options via Publora MCP
 ---
 
 # Telegram Post
 
-Create and schedule posts to Telegram channels and groups using the Publora MCP server. Supports rich markdown formatting, photos, videos, documents, and silent posting.
+Create and schedule posts to Telegram channels and groups using the Publora MCP server. Supports rich markdown formatting, photos, videos, and message delivery options.
 
 ## Prerequisites
 
@@ -26,15 +26,39 @@ Connect Publora MCP server in your Claude Desktop config:
 
 Get your API key at [publora.com/settings/api](https://publora.com/settings/api)
 
-## Platform Limits
+**Additional setup:**
+1. Create a bot with [@BotFather](https://t.me/BotFather) on Telegram
+2. Add the bot as **administrator** to your channel/group with `can_post_messages` permission
+3. Connect in Publora dashboard with bot token and channel name
+
+## Platform Limits (Bot API)
 
 | Feature | Limit |
 |---------|-------|
 | Text message | 4,096 characters |
-| Media caption | 1,024 characters |
-| Photos | JPG, PNG, GIF (up to 10 MB) |
-| Videos | MP4, up to 2 GB, 50 MB for streaming |
-| Documents | Any format, up to 2 GB |
+| **Media caption** | **1,024 characters** (critical limit!) |
+| Images | 10 MB max, 10 per media group |
+| Image formats | JPEG, PNG, GIF, BMP, WebP |
+| **Video size** | **50 MB max** (not 4 GB - that's for users!) |
+| Video formats | MP4, MOV, AVI, MKV, WebM |
+| Rate limit | 30 msg/sec global, 20 msg/min per group |
+
+**Critical:** Bot API has much lower limits than regular Telegram users. Videos over 50 MB and captions over 1,024 characters will fail.
+
+## Markdown Formatting
+
+Telegram uses its own markdown flavor with **single asterisks** for bold:
+
+| Syntax | Result |
+|--------|--------|
+| `*bold*` | **bold** |
+| `_italic_` | *italic* |
+| `` `code` `` | `inline code` |
+| ``` ```code``` ``` | Code block |
+| `[text](url)` | [hyperlink](url) |
+| `> text` | Blockquote |
+
+**Note:** This differs from standard Markdown where `**double asterisks**` make bold.
 
 ## Available Tools
 
@@ -42,100 +66,83 @@ Get your API key at [publora.com/settings/api](https://publora.com/settings/api)
 Create a new Telegram post.
 
 **Parameters:**
-- `platform`: "telegram"
+- `platforms`: Array with your Telegram connection ID (e.g., `["telegram-1001234567890"]`)
 - `content`: Message text (supports markdown)
-- `scheduled_at` (optional): ISO 8601 datetime
-- `media_ids` (optional): Uploaded media IDs
-- `platform_settings` (optional): Telegram-specific options
-
-### Platform Settings
-
-```json
-{
-  "disableNotification": true,    // Silent message
-  "disableWebPagePreview": true,  // No link preview
-  "protectContent": true          // Disable forwarding/saving
-}
-```
+- `scheduledTime`: ISO 8601 datetime
 
 ### get_upload_url
 Get presigned URL for media uploads.
 
-### list_posts
-List scheduled and published Telegram posts.
+### list_posts / update_post / delete_post
+Manage scheduled and draft posts.
 
-## Markdown Formatting
+## Post Options (via REST API)
 
-Telegram uses its own markdown flavor:
+Telegram-specific options available via REST API `platformSettings.telegram`:
 
-| Format | Syntax | Result |
-|--------|--------|--------|
-| Bold | `*bold*` | **bold** |
-| Italic | `_italic_` | *italic* |
-| Code | `` `code` `` | `code` |
-| Link | `[text](url)` | [text](url) |
-| Code block | ``` ```code``` ``` | Code block |
+| Option | Description |
+|--------|-------------|
+| `disableNotification` | Send silently (no sound) |
+| `disableWebPagePreview` | No link preview cards |
+| `showCaptionAboveMedia` | Caption above image/video |
+| `protectContent` | Prevent forwarding/saving |
 
-**Note**: Telegram markdown differs from standard markdown. Use single asterisks for bold, underscores for italic.
+Note: `platformSettings` is not available via MCP - use REST API for these options.
 
 ## Examples
 
 ### Simple Channel Post
 ```
 Post this to my Telegram channel:
-"New blog post published: How to Build a Personal Brand in 2024"
+"*Product Update v2.5*
+
+We have shipped the following improvements:
+- _Faster API response times_ (avg 45ms)
+- New `batch` endpoint for bulk operations
+
+[Read the changelog](https://example.com/changelog)"
 ```
 
 ### Formatted Announcement
 ```
 Create a Telegram post with this formatting:
-*Important Update*
+"*Important Update*
 
 We're launching our new feature tomorrow at 10 AM UTC.
 
 _What's new:_
-- Feature A
-- Feature B
+- Feature A improvements
+- Feature B release
 
-[Read the full announcement](https://example.com/update)
-```
-
-### Silent Post (No Notification)
-```
-Post this to Telegram silently (no notification to subscribers):
-"Daily digest: Today's top 5 articles..."
+[Read the full announcement](https://example.com/update)"
 ```
 
 ### Post with Image
 ```
 Post this image to my Telegram channel with caption:
-"Our team at the conference! Great discussions on AI in healthcare."
+"*New Dashboard Preview*
+
+Here's a sneak peek at our redesigned analytics dashboard."
 ```
+**Important:** Caption must be under 1,024 characters when posting with media.
 
 ### Scheduled Post
 ```
 Schedule this for tomorrow at 8 AM Moscow time:
-"Good morning! Here's your daily market summary..."
+"*Good morning!* Here's your daily market summary..."
 ```
 
-### Protected Content
-```
-Post this as protected content (no forwarding/saving):
-"Exclusive content for channel members only..."
-```
+## Important Restrictions
 
-## Bot vs MTProto
+1. **Caption limit is 1,024 chars**: When posting with media (images/videos), text is sent as a caption limited to 1,024 characters. Text-only messages allow 4,096 characters.
 
-Publora supports both connection types:
+2. **Video max 50 MB**: Bot API limits videos to 50 MB (not 4 GB like regular users). Large videos will fail.
 
-| Feature | Bot API | MTProto |
-|---------|---------|---------|
-| Setup | Easy (BotFather token) | Advanced (app credentials) |
-| Post as | Bot name | Your personal name |
-| Channels | Bot must be admin | Direct access |
-| Rate limits | Moderate | Higher |
+3. **Bot must be admin**: Your bot needs administrator role with `can_post_messages` permission. This is verified at connection time.
 
-Most users use Bot API. Connect via Publora dashboard.
+4. **No mixed media**: A single post cannot contain both images and videos.
+
+5. **Caption overflow**: If caption exceeds 1,024 chars on a media post, it's sent as a separate reply message instead of being truncated.
 
 ## Best Practices
 
@@ -143,12 +150,12 @@ Most users use Bot API. Connect via Publora dashboard.
 1. **Use formatting**: Bold headlines, italic emphasis improves readability
 2. **Link previews**: Great for articles; disable for cleaner announcements
 3. **Emoji usage**: Common and expected on Telegram
-4. **Post length**: No penalty for longer posts; be comprehensive
+4. **Post length**: No penalty for longer posts on text-only messages
 
 ### Timing
-- **Global audience**: Telegram users are worldwide; consider multiple timezone posts
+- **Global audience**: Telegram users are worldwide; consider timezone posts
 - **Best times**: 8-10 AM, 12-2 PM, 7-9 PM in target regions
-- **Frequency**: Channels can post more frequently than other platforms (5-10/day)
+- **Frequency**: Channels can post more frequently (5-10/day)
 
 ### Engagement
 - Enable comments in channel settings for discussions
@@ -157,7 +164,10 @@ Most users use Bot API. Connect via Publora dashboard.
 
 ## Troubleshooting
 
-- **"Bot not admin"**: Ensure your bot is added as admin to the channel/group
-- **"Channel not found"**: Verify channel username or ID in Publora settings
-- **"Message too long"**: Text posts max 4,096 chars; captions max 1,024
-- **"Media not supported"**: Check format and size against limits
+| Error | Cause | Solution |
+|-------|-------|----------|
+| "Bot not admin" | Bot missing admin permissions | Add bot as admin with `can_post_messages` |
+| "Channel not found" | Wrong channel name/ID | Verify `@channelname` or numeric chat ID |
+| `MEDIA_CAPTION_TOO_LONG` | Caption > 1,024 chars | Shorten caption or use text-only post |
+| "Bad Request: file is too big" | File > 50 MB | Compress video/image to under 50 MB |
+| "Mixed media not supported" | Images + video in same post | Use one media type per post |
