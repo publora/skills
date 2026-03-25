@@ -45,9 +45,24 @@ If the MCP server is unavailable or returns errors, use the REST API directly:
 curl -X GET "https://api.publora.com/api/v1/platform-connections" \
   -H "x-publora-key: sk_your_api_key"
 
-# Get post stats (via REST endpoint)
-curl -X GET "https://api.publora.com/api/v1/linkedin/post-stats?postedId=urn:li:share:123456&platformId=linkedin-abc123" \
-  -H "x-publora-key: sk_your_api_key"
+# Get post statistics
+curl -X POST "https://api.publora.com/api/v1/linkedin-post-statistics" \
+  -H "x-publora-key: sk_your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "platformId": "linkedin-abc123",
+    "postedId": "urn:li:share:7123456789012345678",
+    "queryTypes": "ALL"
+  }'
+
+# Get account statistics
+curl -X POST "https://api.publora.com/api/v1/linkedin-account-statistics" \
+  -H "x-publora-key: sk_your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "platformId": "linkedin-abc123",
+    "queryTypes": "ALL"
+  }'
 ```
 
 **Platform ID Format:** `linkedin-{id}` where `{id}` is from `/platform-connections` response.
