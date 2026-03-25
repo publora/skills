@@ -35,6 +35,37 @@ Create and schedule posts to YouTube, Facebook Pages, and Mastodon using the Pub
 }
 ```
 
+### REST API Fallback
+
+If MCP is unavailable, use the REST API directly:
+
+**Base URL:** `https://api.publora.com/api/v1`
+
+**Authentication:** `x-publora-key` header
+
+```bash
+# Get connected platforms
+curl -X GET "https://api.publora.com/api/v1/platform-connections" \
+  -H "x-publora-key: sk_your_api_key"
+
+# Create a post
+curl -X POST "https://api.publora.com/api/v1/create-post" \
+  -H "x-publora-key: sk_your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "platforms": ["youtube-UCxxx", "facebook-123456", "mastodon-789"],
+    "content": "Your post content",
+    "scheduledTime": "2026-03-25T10:00:00Z"
+  }'
+```
+
+**Platform ID Formats:**
+- YouTube: `youtube-{channel_id}` (e.g., `youtube-UCxxx`)
+- Facebook: `facebook-{page_id}` (e.g., `facebook-112233445566`)
+- Mastodon: `mastodon-{id}` (e.g., `mastodon-456`)
+
+📖 **Docs:** [docs.publora.com](https://docs.publora.com)
+
 ### Plan Limits
 
 | Plan | Posts/month | Price |

@@ -32,6 +32,42 @@ Upload and schedule videos to TikTok using the Publora MCP server. Supports priv
 }
 ```
 
+### REST API Fallback
+
+If the MCP server is unavailable or returns errors, use the REST API directly:
+
+**Base URL:** `https://api.publora.com/api/v1`
+
+**Authentication:** Use `x-publora-key` header (NOT `Authorization: Bearer`):
+
+```bash
+# Get your connected platforms
+curl -X GET "https://api.publora.com/api/v1/platform-connections" \
+  -H "x-publora-key: sk_your_api_key"
+
+# Create a post
+curl -X POST "https://api.publora.com/api/v1/create-post" \
+  -H "x-publora-key: sk_your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "platforms": ["tiktok-99887766"],
+    "content": "Video caption here #hashtag",
+    "scheduledTime": "2026-03-25T10:00:00Z",
+    "platformSettings": {
+      "tiktok": {
+        "viewerSetting": "PUBLIC_TO_EVERYONE",
+        "allowComments": true
+      }
+    }
+  }'
+```
+
+**Platform ID Format:** `tiktok-{id}` where `{id}` is from `/platform-connections` response.
+
+Example IDs: `tiktok-99887766`, `tiktok-123456789`
+
+📖 **Full API documentation:** [docs.publora.com](https://docs.publora.com)
+
 ### Plan Limits
 
 | Plan | Posts/month | Price |

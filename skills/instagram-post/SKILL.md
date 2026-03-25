@@ -33,6 +33,36 @@ Create and schedule Instagram posts using the Publora MCP server. Supports image
 }
 ```
 
+### REST API Fallback
+
+If the MCP server is unavailable or returns errors, use the REST API directly:
+
+**Base URL:** `https://api.publora.com/api/v1`
+
+**Authentication:** Use `x-publora-key` header (NOT `Authorization: Bearer`):
+
+```bash
+# Get your connected platforms
+curl -X GET "https://api.publora.com/api/v1/platform-connections" \
+  -H "x-publora-key: sk_your_api_key"
+
+# Create a post
+curl -X POST "https://api.publora.com/api/v1/create-post" \
+  -H "x-publora-key: sk_your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "platforms": ["instagram-11223344"],
+    "content": "Your caption here #hashtag",
+    "scheduledTime": "2026-03-25T10:00:00Z"
+  }'
+```
+
+**Platform ID Format:** `instagram-{id}` where `{id}` is from `/platform-connections` response.
+
+Example IDs: `instagram-11223344`, `instagram-55667788`
+
+📖 **Full API documentation:** [docs.publora.com](https://docs.publora.com)
+
 ### Plan Limits
 
 | Plan | Posts/month | Price |

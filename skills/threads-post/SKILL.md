@@ -32,6 +32,34 @@ Create and schedule posts on Meta's Threads using the Publora MCP server. Suppor
 }
 ```
 
+### REST API Fallback
+
+If MCP is unavailable, use the REST API directly:
+
+**Base URL:** `https://api.publora.com/api/v1`
+
+**Authentication:** `x-publora-key` header
+
+```bash
+# Get connected platforms
+curl -X GET "https://api.publora.com/api/v1/platform-connections" \
+  -H "x-publora-key: sk_your_api_key"
+
+# Create a post
+curl -X POST "https://api.publora.com/api/v1/create-post" \
+  -H "x-publora-key: sk_your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "platforms": ["threads-12345"],
+    "content": "Your post content",
+    "scheduledTime": "2026-03-25T10:00:00Z"
+  }'
+```
+
+**Platform ID Format:** `threads-{id}` (from `/platform-connections`)
+
+📖 **Docs:** [docs.publora.com](https://docs.publora.com)
+
 ### Plan Limits
 
 | Plan | Posts/month | Price |

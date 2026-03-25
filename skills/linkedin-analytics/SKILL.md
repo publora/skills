@@ -32,6 +32,30 @@ Get detailed analytics for your LinkedIn posts and profile using the Publora MCP
 }
 ```
 
+### REST API Fallback
+
+If the MCP server is unavailable or returns errors, use the REST API directly:
+
+**Base URL:** `https://api.publora.com/api/v1`
+
+**Authentication:** Use `x-publora-key` header (NOT `Authorization: Bearer`):
+
+```bash
+# Get your connected platforms
+curl -X GET "https://api.publora.com/api/v1/platform-connections" \
+  -H "x-publora-key: sk_your_api_key"
+
+# Get post stats (via REST endpoint)
+curl -X GET "https://api.publora.com/api/v1/linkedin/post-stats?postedId=urn:li:share:123456&platformId=linkedin-abc123" \
+  -H "x-publora-key: sk_your_api_key"
+```
+
+**Platform ID Format:** `linkedin-{id}` where `{id}` is from `/platform-connections` response.
+
+Example IDs: `linkedin-Tz9W5i6ZYG`, `linkedin-abc123xyz`
+
+📖 **Full API documentation:** [docs.publora.com](https://docs.publora.com)
+
 ## Analytics Tools
 
 ### linkedin_post_stats
