@@ -108,7 +108,7 @@ Create a new Bluesky post.
 **Parameters:**
 - `platforms`: Array with your Bluesky connection ID (e.g., `["bluesky-did:plc:abc123xyz"]`)
 - `content`: Post text (up to 300 characters)
-- `scheduledTime`: ISO 8601 datetime
+- `scheduledTime`: ISO 8601 datetime (**required** - for immediate posting, use current time + 1 minute)
 - `altTexts`: Array of alt text for images (optional)
 
 ### get_upload_url

@@ -113,7 +113,7 @@ Create a new Instagram post.
 **Parameters:**
 - `platforms`: Array with your Instagram connection ID (e.g., `["instagram-11223344"]`)
 - `content`: Caption text (up to 2,200 characters)
-- `scheduledTime`: ISO 8601 datetime
+- `scheduledTime`: ISO 8601 datetime (**required** - for immediate posting, use current time + 1 minute)
 
 ### get_upload_url
 Get presigned URL for media uploads.

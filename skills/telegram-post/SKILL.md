@@ -114,7 +114,7 @@ Create a new Telegram post.
 **Parameters:**
 - `platforms`: Array with your Telegram connection ID (e.g., `["telegram-1001234567890"]`)
 - `content`: Message text (supports markdown)
-- `scheduledTime`: ISO 8601 datetime
+- `scheduledTime`: ISO 8601 datetime (**required** - for immediate posting, use current time + 1 minute)
 
 ### get_upload_url
 Get presigned URL for media uploads.

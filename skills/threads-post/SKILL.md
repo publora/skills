@@ -92,7 +92,7 @@ Create a new Threads post or thread.
 **Parameters:**
 - `platforms`: Array with your Threads connection ID (e.g., `["threads-12345"]`)
 - `content`: Post text (auto-threads if over 500 chars)
-- `scheduledTime`: ISO 8601 datetime
+- `scheduledTime`: ISO 8601 datetime (**required** - for immediate posting, use current time + 1 minute)
 
 ### get_upload_url
 Get a presigned URL to upload images.

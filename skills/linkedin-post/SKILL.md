@@ -91,7 +91,7 @@ Create a new LinkedIn post or schedule for later.
 **Parameters:**
 - `platforms`: Array including your LinkedIn connection ID (e.g., `["linkedin-abc123"]`)
 - `content`: Post text (up to 3,000 characters)
-- `scheduledTime`: ISO 8601 datetime (required for MCP)
+- `scheduledTime`: ISO 8601 datetime (**required** - for immediate posting, use current time + 1 minute)
 
 ### get_upload_url
 Get a presigned URL to upload media.

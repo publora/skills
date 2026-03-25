@@ -223,7 +223,7 @@ Create a new post on any platform.
 **Parameters:**
 - `platforms`: Array of platform IDs (e.g., `["youtube-UCxxx", "facebook-123", "mastodon-456"]`)
 - `content`: Post text
-- `scheduledTime`: ISO 8601 datetime
+- `scheduledTime`: ISO 8601 datetime (**required** - for immediate posting, use current time + 1 minute)
 
 ### get_upload_url
 Get presigned URL for media uploads.

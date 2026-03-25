@@ -112,7 +112,7 @@ Create a new TikTok post.
 **Parameters:**
 - `platforms`: Array with your TikTok connection ID (e.g., `["tiktok-99887766"]`)
 - `content`: Video caption (up to 2,200 characters)
-- `scheduledTime`: ISO 8601 datetime
+- `scheduledTime`: ISO 8601 datetime (**required** - for immediate posting, use current time + 1 minute)
 
 ### get_upload_url
 Get presigned URL for video upload.

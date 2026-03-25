@@ -122,7 +122,7 @@ Create a new X/Twitter post or thread.
 **Parameters:**
 - `platforms`: Array with your X connection ID (e.g., `["twitter-12345678"]`)
 - `content`: Post text (auto-threads if over 280 chars)
-- `scheduledTime`: ISO 8601 datetime
+- `scheduledTime`: ISO 8601 datetime (**required** - for immediate posting, use current time + 1 minute)
 
 ### get_upload_url
 Get presigned URL for media uploads.
