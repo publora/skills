@@ -21,8 +21,8 @@ Create and schedule posts to Telegram channels and groups using the Publora MCP 
 4. **Add bot to your channel:**
    - Add the bot as **administrator** to your channel/group
    - Grant `can_post_messages` permission
-5. **Connect in Publora** at [Dashboard](https://publora.com/dashboard) with bot token and channel name
-6. **Get API key** at [publora.com/settings/api](https://publora.com/settings/api)
+5. **Connect in Publora** at [Dashboard](https://app.publora.com/dashboard) with bot token and channel name
+6. **Get API key** at [publora.com/settings/api](https://app.publora.com/settings/api)
 7. **Configure MCP** in Claude Desktop (`~/.claude/claude_desktop_config.json`):
 
 ```json
@@ -146,7 +146,7 @@ We have shipped the following improvements:
 - _Faster API response times_ (avg 45ms)
 - New `batch` endpoint for bulk operations
 
-[Read the changelog](https://example.com/changelog)"
+[Read the changelog](https://publora.com/blog)"
 ```
 
 ### Formatted Announcement
@@ -160,7 +160,7 @@ _What's new:_
 - Feature A improvements
 - Feature B release
 
-[Read the full announcement](https://example.com/update)"
+[Read the full announcement](https://docs.publora.com/getting-started)"
 ```
 
 ### Post with Image

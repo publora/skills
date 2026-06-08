@@ -20,13 +20,13 @@ Sign up for free at [publora.com/register](https://publora.com/register)
 
 ### Step 3: Connect Your Social Accounts
 
-1. Go to [Publora Dashboard](https://publora.com/dashboard)
+1. Go to [Publora Dashboard](https://app.publora.com/dashboard)
 2. Click "Connect Account" for each platform
 3. Complete OAuth authorization (or bot setup for Telegram)
 
 ### Step 4: Get Your API Key
 
-1. Go to [publora.com/settings/api](https://publora.com/settings/api)
+1. Go to [publora.com/settings/api](https://app.publora.com/settings/api)
 2. Click "Create API Key"
 3. Copy the key (you'll need it for MCP config)
 
@@ -151,7 +151,7 @@ Yes. Upgrade or downgrade from Settings. Changes take effect immediately.
 - [Pricing](https://publora.com/pricing)
 - [Documentation](https://docs.publora.com)
 - [MCP Tools Reference](https://docs.publora.com/mcp/tools-reference)
-- [API Documentation](https://docs.publora.com/api)
+- [API Documentation](https://docs.publora.com/getting-started)
 
 ## License
 
