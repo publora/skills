@@ -58,6 +58,10 @@ npx skills add publora/skills
 npx skills add publora/skills --skill linkedin-post
 ```
 
+## Optional X/Twitter Research Companion
+
+Hermes Agent users who gather X/Twitter context before scheduling can pair Publora with [Hermes Tweet](https://github.com/Xquik-dev/hermes-tweet). Use Hermes Tweet for X account context, search, monitoring, follower exports, and approval-gated drafts, then use Publora for final cross-platform scheduling.
+
 ## Available Skills
 
 ### Posting Skills
