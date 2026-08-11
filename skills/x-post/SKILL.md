@@ -17,8 +17,8 @@ Create and schedule posts to X (Twitter) using the Publora MCP server. Supports 
 
 1. **Create account** at [publora.com/register](https://publora.com/register)
 2. **Choose Pro or Premium plan** (X/Twitter requires paid plan)
-3. **Connect X/Twitter** via OAuth in [Publora Dashboard](https://publora.com/dashboard)
-4. **Get API key** at [publora.com/settings/api](https://publora.com/settings/api)
+3. **Connect X/Twitter** via OAuth in [Publora Dashboard](https://app.publora.com/dashboard)
+4. **Get API key** at [publora.com/settings/api](https://app.publora.com/dashboard/api)
 5. **Configure MCP** in Claude Desktop (`~/.claude/claude_desktop_config.json`):
 
 ```json
