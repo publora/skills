@@ -14,11 +14,11 @@ Create and schedule posts to YouTube, Facebook Pages, and Mastodon using the Pub
 ### Getting Started
 
 1. **Create account** at [publora.com/register](https://publora.com/register) (free)
-2. **Connect platforms** via OAuth in [Publora Dashboard](https://publora.com/dashboard):
+2. **Connect platforms** via OAuth in [Publora Dashboard](https://app.publora.com/dashboard):
    - **YouTube**: Google OAuth (requires YouTube channel)
    - **Facebook**: Facebook OAuth (Pages only, not personal profiles)
    - **Mastodon**: OAuth (mastodon.social instance)
-3. **Get API key** at [publora.com/settings/api](https://publora.com/settings/api)
+3. **Get API key** at [publora.com/settings/api](https://app.publora.com/dashboard/api)
 4. **Configure MCP** in Claude Desktop (`~/.claude/claude_desktop_config.json`):
 
 ```json
