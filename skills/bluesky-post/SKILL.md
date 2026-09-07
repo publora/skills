@@ -15,8 +15,8 @@ Create and schedule posts to Bluesky using the Publora MCP server. Supports text
 
 1. **Create account** at [publora.com/register](https://publora.com/register) (free)
 2. **Generate app password** in Bluesky Settings > App Passwords (NOT your main password)
-3. **Connect Bluesky** in [Publora Dashboard](https://publora.com/dashboard) using your handle + app password
-4. **Get API key** at [publora.com/settings/api](https://publora.com/settings/api)
+3. **Connect Bluesky** in [Publora Dashboard](https://app.publora.com/dashboard) using your handle + app password
+4. **Get API key** at [publora.com/settings/api](https://app.publora.com/dashboard/api)
 5. **Configure MCP** in Claude Desktop (`~/.claude/claude_desktop_config.json`):
 
 ```json

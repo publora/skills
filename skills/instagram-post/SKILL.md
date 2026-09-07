@@ -15,8 +15,8 @@ Create and schedule Instagram posts using the Publora MCP server. Supports image
 
 1. **Create account** at [publora.com/register](https://publora.com/register) (free)
 2. **Convert to Business account** in Instagram settings (Personal and Creator accounts are NOT supported by the API)
-3. **Connect Instagram** via OAuth in [Publora Dashboard](https://publora.com/dashboard)
-4. **Get API key** at [publora.com/settings/api](https://publora.com/settings/api)
+3. **Connect Instagram** via OAuth in [Publora Dashboard](https://app.publora.com/dashboard)
+4. **Get API key** at [publora.com/settings/api](https://app.publora.com/dashboard/api)
 5. **Configure MCP** in Claude Desktop (`~/.claude/claude_desktop_config.json`):
 
 ```json
