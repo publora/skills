@@ -19,4 +19,6 @@ jobs:
       - name: Compare skills against the live tools/list
         env:
           PUBLORA_DRIFT_KEY: ${{ secrets.PUBLORA_DRIFT_KEY }}
-        run: python3 scripts/check_mcp_drift.py
+        # --require-key so a missing or renamed secret fails loudly. A drift
+        # check that quietly stops running is worse than no drift check.
+        run: python3 scripts/check_mcp_drift.py --require-key

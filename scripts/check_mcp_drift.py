@@ -13,6 +13,7 @@ Usage: PUBLORA_DRIFT_KEY=sk_... python3 scripts/check_mcp_drift.py
 
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import re
@@ -25,8 +26,16 @@ SKILLS = ROOT / "skills"
 MCP = "https://mcp.publora.com"
 PROTOCOL = "2025-03-26"
 
-# A "### tool_name" heading in a skill is a claim that the tool exists.
-HEADING = re.compile(r"^#{3}\s+([a-z][a-z0-9_]*)\s*$", re.M)
+# Cloudflare rejects the default urllib user agent with a 1010, so the check
+# would fail every Monday with an opaque 403. Do not remove this.
+USER_AGENT = "publora-skills-drift-check/1 (+https://github.com/publora/skills)"
+
+# A "### tool_name" heading in a skill is a claim that the tool exists. Skills
+# also group related tools in one heading, so split on "/" and judge each part.
+HEADING = re.compile(r"^#{3}\s+(.+?)\s*$", re.M)
+# Every real tool is snake_case with at least one underscore, which is also what
+# separates a tool claim from an ordinary prose heading.
+TOOL_NAME = re.compile(r"^[a-z][a-z0-9]*(?:_[a-z0-9]+)+$")
 
 
 def rpc(key: str, method: str, params: dict, session: str | None = None):
@@ -34,6 +43,7 @@ def rpc(key: str, method: str, params: dict, session: str | None = None):
         "Authorization": f"Bearer {key}",
         "Content-Type": "application/json",
         "Accept": "application/json, text/event-stream",
+        "User-Agent": USER_AGENT,
     }
     if session:
         headers["mcp-session-id"] = session
@@ -61,30 +71,42 @@ def live_tools(key: str) -> set[str]:
 
 
 def documented() -> dict[str, list[str]]:
+    """Every tool name claimed by a heading, mapped to the skills claiming it."""
     claims: dict[str, list[str]] = {}
     for skill in sorted(SKILLS.glob("*/SKILL.md")):
-        for name in HEADING.findall(skill.read_text(encoding="utf-8")):
-            claims.setdefault(name, []).append(skill.parent.name)
+        for heading in HEADING.findall(skill.read_text(encoding="utf-8")):
+            for part in heading.split("/"):
+                name = part.strip()
+                if TOOL_NAME.match(name):
+                    claims.setdefault(name, []).append(skill.parent.name)
     return claims
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--require-key", action="store_true",
+        help="fail instead of skipping when PUBLORA_DRIFT_KEY is missing (use in CI, "
+             "so a renamed or expired secret is visible rather than silently green)")
+    args = parser.parse_args()
+
     key = os.environ.get("PUBLORA_DRIFT_KEY")
     if not key:
+        if args.require_key:
+            print("PUBLORA_DRIFT_KEY is not set. The drift check cannot run, and a check "
+                  "that cannot run must not report success.", file=sys.stderr)
+            return 2
         print("PUBLORA_DRIFT_KEY is not set; skipping drift check.", file=sys.stderr)
         return 0
 
     live = live_tools(key)
     claims = documented()
 
-    # Only headings that look like MCP tool names are claims about the server.
-    # Everything else in a skill is prose, so ignore unknown words unless they
-    # share a prefix with a real tool family.
-    families = tuple(sorted({t.split("_")[0] + "_" for t in live}))
-    relevant = {n: s for n, s in claims.items() if n in live or n.startswith(families)}
-
-    phantom = {n: s for n, s in relevant.items() if n not in live}
-    uncovered = sorted(live - set(relevant))
+    # Every snake_case heading is a claim, including one naming a tool family
+    # this server has never had. Filtering by known prefixes would hide exactly
+    # the invented tools this check exists to catch.
+    phantom = {n: s for n, s in claims.items() if n not in live}
+    uncovered = sorted(live - set(claims))
 
     if uncovered:
         print("Live tools no skill mentions (not fatal):")
