@@ -8,7 +8,7 @@ corrected fact.
 
 ## [Unreleased]
 
-## [1.0.0] - 2026-09-07
+## [1.0.0] - 2026-09-08
 
 First tagged release. The skills had been shipping without versions since March,
 so users had no way to tell what they were running or what had changed.
