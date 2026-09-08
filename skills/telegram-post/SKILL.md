@@ -1,6 +1,6 @@
 ---
 name: telegram-post
-description: Use when the user wants to post or schedule to a Telegram channel or group through Publora, using a bot. Covers Telegram markdown, silent delivery, link previews and forward protection. Bot API caps media captions at 1,024 characters and videos at 50 MB.
+description: Use when the user wants to post or schedule to a Telegram channel or group through Publora, using a bot. Covers Telegram markdown, silent delivery, link previews and forward protection. Bot API caps media captions at 1,024 characters and videos at 50 MB. Not for other platforms (each has its own skill).
 ---
 
 # Telegram Post

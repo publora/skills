@@ -1,0 +1,28 @@
+name: HOL Plugin Scanner
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  scan:
+    name: Scan skills for unsafe instructions
+    runs-on: ubuntu-latest
+    steps:
+      # Third-party actions are pinned by commit SHA, not by tag: a tag can be
+      # repointed at new code, a SHA cannot.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: HOL Plugin Scanner
+        uses: hashgraph-online/ai-plugin-scanner-action@7e420247177d5beebbd3747ed16e4b29a1e41f57 # v1
+        with:
+          plugin_dir: "."
+          mode: scan
+          min_score: 80
+          fail_on_severity: high
+          format: sarif
+          upload_sarif: true
