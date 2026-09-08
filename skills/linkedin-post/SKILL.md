@@ -1,6 +1,6 @@
 ---
 name: linkedin-post
-description: Create and schedule LinkedIn posts with text, images, videos, and documents via Publora MCP
+description: Use when the user wants to publish or schedule a LinkedIn post through Publora: text, a multi-image grid, a video, a PDF document, or @mentions. Not for analytics, reactions, comments or reshares (use linkedin-analytics), and not for other platforms.
 ---
 
 # LinkedIn Post
@@ -9,28 +9,21 @@ Create and schedule LinkedIn posts using the Publora MCP server. Supports text p
 
 ## Prerequisites
 
-**Plans:** Starter (free), Pro, Premium - LinkedIn is available on all plans including free.
+**Plans:** Works on the free Starter plan. Current limits and pricing: [publora.com/pricing](https://publora.com/pricing).
 
 ### Getting Started
 
 1. **Create account** at [publora.com/register](https://publora.com/register) (free)
 2. **Connect LinkedIn** via OAuth in [Publora Dashboard](https://app.publora.com/dashboard)
-3. **Get API key** at [publora.com/settings/api](https://app.publora.com/dashboard/api)
-4. **Configure MCP** in Claude Desktop (`~/.claude/claude_desktop_config.json`):
+3. **Get API key** at [app.publora.com/dashboard/api](https://app.publora.com/dashboard/api)
+4. **Connect your agent** to the MCP server at `https://mcp.publora.com`, authenticating with `Authorization: Bearer sk_YOUR_API_KEY`. In Claude Code:
 
-```json
-{
-  "mcpServers": {
-    "publora": {
-      "type": "http",
-      "url": "https://mcp.publora.com",
-      "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
-      }
-    }
-  }
-}
+```bash
+claude mcp add publora --transport http https://mcp.publora.com \
+  --header "Authorization: Bearer sk_YOUR_API_KEY"
 ```
+
+   Claude Desktop, Cursor, Codex, OpenClaw and the claude.ai connector each need a different config file or flow: see [client setup](https://docs.publora.com/mcp/client-setup) for the exact path and snippet.
 
 ### REST API Fallback
 
@@ -62,14 +55,6 @@ Example IDs: `linkedin-Tz9W5i6ZYG`, `linkedin-abc123xyz`
 
 📖 **Full API documentation:** [docs.publora.com](https://docs.publora.com)
 
-### Plan Limits
-
-| Plan | Posts/month | Price |
-|------|-------------|-------|
-| Starter | 15 | Free |
-| Pro | 100/account | $2.99/account/month |
-| Premium | 500/account | $9.99/account/month |
-
 ## Platform Limits
 
 | Feature | Limit |
@@ -91,7 +76,8 @@ Create a new LinkedIn post or schedule for later.
 **Parameters:**
 - `platforms`: Array including your LinkedIn connection ID (e.g., `["linkedin-abc123"]`)
 - `content`: Post text (up to 3,000 characters)
-- `scheduledTime`: ISO 8601 datetime (**required** - for immediate posting, use current time + 1 minute)
+- `scheduledTime`: ISO 8601 UTC datetime. **Optional**: omit it and the post is created as a draft. Send a future time to schedule. A time five or more minutes in the past is rejected with `SCHEDULED_TIME_IN_PAST`, so for immediate posting use the current time plus a minute.
+- `mediaUrls`: up to 10 public **https** image or video URLs. Publora downloads them server-side and attaches them *before* validation, so media and scheduling happen in one call. This is the one-shot alternative to the draft then `get_upload_url` then `complete_media` flow. Ingestion is rate-limited to 60 URLs per hour.
 
 ### get_upload_url
 Get a presigned URL to upload media.
@@ -102,8 +88,17 @@ Get a presigned URL to upload media.
 - `contentType`: MIME type (e.g., "image/jpeg", "video/mp4", "application/pdf")
 - `type`: "image" or "video"
 
-### list_posts / update_post / delete_post
-Manage your scheduled and draft posts.
+### complete_media
+Finalize a file uploaded through `get_upload_url`, after the presigned `PUT` succeeds. Optional, because scheduling also finalizes pending media, but calling it early surfaces format and probe errors before publish. Not needed for media attached with `mediaUrls`.
+
+**Parameters:**
+- `mediaId`: the id returned by `get_upload_url`
+
+### list_connections
+List your connected accounts with their platform IDs. Call this first and copy the IDs verbatim; they are never guessable.
+
+### list_posts / get_post / update_post / delete_post
+Manage scheduled and draft posts. `update_post` also patches `content` and `platforms` on a draft or scheduled post, so fixing a typo or retargeting no longer means delete and recreate. `delete_media` and `prune_media_reference` clean up uploaded files.
 
 ## Mentioning People and Companies
 
@@ -120,6 +115,8 @@ Great insights from @{urn:li:person:4986615|Serge Bulaev} at @{urn:li:organizati
 ```
 
 **Important:** The display name must exactly match the LinkedIn profile name (case-sensitive), including company suffixes like "Inc", "LLC", etc.
+
+**Do not hand-write member ids.** The `linkedin_list_mentionables` MCP tool resolves a name to the correct URN; see the `linkedin-analytics` skill.
 
 ## Important API Restrictions
 

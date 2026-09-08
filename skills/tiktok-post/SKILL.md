@@ -1,6 +1,6 @@
 ---
 name: tiktok-post
-description: Upload videos to TikTok with privacy controls and interaction settings via Publora MCP
+description: Use when the user wants to upload or schedule a TikTok video through Publora, with privacy, comment, duet, stitch and commercial-disclosure settings. Video only, 3 seconds to 10 minutes, 23+ FPS. Unaudited apps can publish private videos only. Not for Reels (use instagram-post).
 ---
 
 # TikTok Post
@@ -9,28 +9,21 @@ Upload and schedule videos to TikTok using the Publora MCP server. Supports priv
 
 ## Prerequisites
 
-**Plans:** Free Starter (15 posts/month), Pro, Premium
+**Plans:** Works on the free Starter plan. Current limits and pricing: [publora.com/pricing](https://publora.com/pricing).
 
 ### Getting Started
 
 1. **Create account** at [publora.com/register](https://publora.com/register) (free)
 2. **Connect TikTok** via OAuth in [Publora Dashboard](https://app.publora.com/dashboard)
-3. **Get API key** at [publora.com/settings/api](https://app.publora.com/dashboard/api)
-4. **Configure MCP** in Claude Desktop (`~/.claude/claude_desktop_config.json`):
+3. **Get API key** at [app.publora.com/dashboard/api](https://app.publora.com/dashboard/api)
+4. **Connect your agent** to the MCP server at `https://mcp.publora.com`, authenticating with `Authorization: Bearer sk_YOUR_API_KEY`. In Claude Code:
 
-```json
-{
-  "mcpServers": {
-    "publora": {
-      "type": "http",
-      "url": "https://mcp.publora.com",
-      "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
-      }
-    }
-  }
-}
+```bash
+claude mcp add publora --transport http https://mcp.publora.com \
+  --header "Authorization: Bearer sk_YOUR_API_KEY"
 ```
+
+   Claude Desktop, Cursor, Codex, OpenClaw and the claude.ai connector each need a different config file or flow: see [client setup](https://docs.publora.com/mcp/client-setup) for the exact path and snippet.
 
 ### REST API Fallback
 
@@ -68,14 +61,6 @@ Example IDs: `tiktok-99887766`, `tiktok-123456789`
 
 📖 **Full API documentation:** [docs.publora.com](https://docs.publora.com)
 
-### Plan Limits
-
-| Plan | Posts/month | Price |
-|------|-------------|-------|
-| Starter | 15 | Free |
-| Pro | 100/account | $2.99/account/month |
-| Premium | 500/account | $9.99/account/month |
-
 ## Platform Limits (API vs Native App)
 
 **Critical API limits that differ from native TikTok app:**
@@ -112,7 +97,8 @@ Create a new TikTok post.
 **Parameters:**
 - `platforms`: Array with your TikTok connection ID (e.g., `["tiktok-99887766"]`)
 - `content`: Video caption (up to 2,200 characters)
-- `scheduledTime`: ISO 8601 datetime (**required** - for immediate posting, use current time + 1 minute)
+- `scheduledTime`: ISO 8601 UTC datetime. **Optional**: omit it and the post is created as a draft. Send a future time to schedule. A time five or more minutes in the past is rejected with `SCHEDULED_TIME_IN_PAST`, so for immediate posting use the current time plus a minute.
+- `mediaUrls`: up to 10 public **https** image or video URLs. Publora downloads them server-side and attaches them *before* validation, so media and scheduling happen in one call. This is the one-shot alternative to the draft then `get_upload_url` then `complete_media` flow. Ingestion is rate-limited to 60 URLs per hour.
 
 ### get_upload_url
 Get presigned URL for video upload.
@@ -123,8 +109,17 @@ Get presigned URL for video upload.
 - `contentType`: `video/mp4`, `video/quicktime`, or `video/webm`
 - `type`: `"video"`
 
-### list_posts / update_post / delete_post
-Manage scheduled and draft posts.
+### complete_media
+Finalize a file uploaded through `get_upload_url`, after the presigned `PUT` succeeds. Optional, because scheduling also finalizes pending media, but calling it early surfaces format and probe errors before publish. Not needed for media attached with `mediaUrls`.
+
+**Parameters:**
+- `mediaId`: the id returned by `get_upload_url`
+
+### list_connections
+List your connected accounts with their platform IDs. Call this first and copy the IDs verbatim; they are never guessable.
+
+### list_posts / get_post / update_post / delete_post
+Manage scheduled and draft posts. `update_post` also patches `content` and `platforms` on a draft or scheduled post, so fixing a typo or retargeting no longer means delete and recreate. `delete_media` and `prune_media_reference` clean up uploaded files.
 
 ## Platform Settings (via REST API)
 

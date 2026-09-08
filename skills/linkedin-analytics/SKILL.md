@@ -1,36 +1,29 @@
 ---
 name: linkedin-analytics
-description: Analyze LinkedIn performance, track engagement metrics, and manage reactions/comments via Publora MCP
+description: Analyze LinkedIn performance and manage engagement through Publora. Use when the user asks how a LinkedIn post or account performed (impressions, reach, reactions, comments, reshares, follower growth) or wants to react, comment, reshare or resolve an @mention. Statistics run over the REST API, engagement over MCP tools. Not for creating posts (use linkedin-post).
 ---
 
 # LinkedIn Analytics
 
-Get detailed analytics for your LinkedIn posts and profile using the Publora MCP server. Track impressions, engagement, follower growth, and interact with posts through reactions and comments.
+Track impressions, engagement and follower growth for your LinkedIn posts and profile, and interact with posts through reactions, comments and reshares. Statistics come from the REST API; reactions, comments, reshares and mention lookups are MCP tools.
 
 ## Prerequisites
 
-**Plans:** Starter (free), Pro, Premium - LinkedIn is available on all plans including free.
+**Plans:** Works on the free Starter plan. Current limits and pricing: [publora.com/pricing](https://publora.com/pricing).
 
 ### Getting Started
 
 1. **Create account** at [publora.com/register](https://publora.com/register) (free)
 2. **Connect LinkedIn** via OAuth in [Publora Dashboard](https://app.publora.com/dashboard)
-3. **Get API key** at [publora.com/settings/api](https://app.publora.com/dashboard/api)
-4. **Configure MCP** in Claude Desktop (`~/.claude/claude_desktop_config.json`):
+3. **Get API key** at [app.publora.com/dashboard/api](https://app.publora.com/dashboard/api)
+4. **Connect your agent** to the MCP server at `https://mcp.publora.com`, authenticating with `Authorization: Bearer sk_YOUR_API_KEY`. In Claude Code:
 
-```json
-{
-  "mcpServers": {
-    "publora": {
-      "type": "http",
-      "url": "https://mcp.publora.com",
-      "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
-      }
-    }
-  }
-}
+```bash
+claude mcp add publora --transport http https://mcp.publora.com \
+  --header "Authorization: Bearer sk_YOUR_API_KEY"
 ```
+
+   Claude Desktop, Cursor, Codex, OpenClaw and the claude.ai connector each need a different config file or flow: see [client setup](https://docs.publora.com/mcp/client-setup) for the exact path and snippet.
 
 ### REST API Fallback
 
@@ -71,46 +64,41 @@ Example IDs: `linkedin-Tz9W5i6ZYG`, `linkedin-abc123xyz`
 
 📖 **Full API documentation:** [docs.publora.com](https://docs.publora.com)
 
-## Analytics Tools
+## Analytics Tools (REST only)
 
-### linkedin_post_stats
-Get engagement metrics for a specific LinkedIn post.
+LinkedIn analytics are **not exposed as MCP tools**. The MCP server carries posting, media and LinkedIn engagement tools; statistics live only on the REST API, so call these endpoints directly with the `x-publora-key` header. Asking an agent for an `linkedin_post_stats` MCP tool will fail: there is no such tool.
 
-**Parameters:**
-- `postedId`: LinkedIn post URN (e.g., `urn:li:share:123456` or `urn:li:ugcPost:123456`)
-- `platformId`: Platform connection ID (e.g., `linkedin-abc123`)
-- `queryTypes` (optional): Metrics to fetch: `IMPRESSION`, `MEMBERS_REACHED`, `RESHARE`, `REACTION`, `COMMENT`
+### POST /linkedin-post-statistics
+Engagement metrics for one post.
 
-**Response includes:**
-- Impressions (total views)
-- Unique impressions (members reached)
-- Reactions count
-- Comments count
-- Shares/reposts
-- Engagement rate
+**Body:**
+- `platformId`: platform connection ID (e.g. `linkedin-abc123`), from `list_connections`
+- `postedId`: post URN (`urn:li:share:...` or `urn:li:ugcPost:...`)
+- `queryTypes` (optional): `IMPRESSION`, `MEMBERS_REACHED`, `RESHARE`, `REACTION`, `COMMENT`, or `ALL`
 
-### linkedin_account_stats
-Get aggregated statistics for your LinkedIn account.
+**Returns:** impressions, unique impressions (members reached), reactions, comments, reshares, and a `cached` flag telling you whether the numbers came from cache.
 
-**Parameters:**
-- `platformId`: Platform connection ID
-- `queryTypes` (optional): Metrics to fetch
-- `aggregation` (optional): `DAILY` or `TOTAL` (default: TOTAL)
+### POST /linkedin-account-statistics
+Aggregated statistics for the account.
 
-### linkedin_followers
-Get follower count or growth over time.
+**Body:** `platformId`, optional `queryTypes`, optional `aggregation` (`DAILY` or `TOTAL`, default `TOTAL`).
 
-**Parameters:**
-- `platformId`: Platform connection ID
-- `period` (optional): `lifetime` or `daily`
-- `dateRange` (optional): For daily period: `{start: {year, month, day}, end: {year, month, day}}`
+### POST /linkedin-followers
+Follower count or growth over time.
 
-### linkedin_profile_summary
-Get a combined profile overview with followers and stats.
+**Body:** `platformId`, optional `period` (`lifetime` or `daily`), optional `dateRange` (`{start: {year, month, day}, end: {year, month, day}}`).
 
-**Parameters:**
-- `platformId`: Platform connection ID
-- `dateRange` (optional): Date range for stats
+### POST /linkedin-profile-summary
+Combined profile overview: followers plus statistics.
+
+**Body:** `platformId`, optional `dateRange`.
+
+```bash
+curl -X POST "https://api.publora.com/api/v1/linkedin-post-statistics" \
+  -H "x-publora-key: sk_your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{"platformId": "linkedin-abc123", "postedId": "urn:li:share:7123456789012345678", "queryTypes": "ALL"}'
+```
 
 ## Engagement Tools
 
@@ -146,6 +134,23 @@ Post a comment on a LinkedIn post (max 1,250 characters).
 - `platformId`: Platform connection ID
 - `message`: Comment text (max 1,250 characters)
 - `parentComment` (optional): Comment URN for nested replies
+
+### linkedin_create_reshare
+Reshare an existing post, with optional commentary.
+
+**Parameters:**
+- `postedId`: the original post's **share URN** (`urn:li:share:...` or `urn:li:ugcPost:...`)
+- `platformId`: platform connection ID
+- `commentary` (optional): your text above the reshare
+
+Note: a LinkedIn feed URL carries an `activity` id, which is not always the same as the share id. Use the `postedId` returned by `get_post`, not a hand-converted activity id.
+
+### linkedin_list_mentionables
+Resolve names to the URNs that @mentions need, so you never hand-write a member id.
+
+**Parameters:**
+- `platformId`: platform connection ID
+- `query`: the name to search for
 
 ### linkedin_delete_comment
 Remove a comment you made.
