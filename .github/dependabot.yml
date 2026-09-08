@@ -1,0 +1,11 @@
+version: 2
+updates:
+  # GitHub Actions only. This repository ships Markdown plus stdlib-only Python,
+  # so there is no package manifest for dependabot to watch; adding a pip
+  # ecosystem here would be a config that never fires.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "ci"

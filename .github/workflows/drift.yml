@@ -1,0 +1,24 @@
+name: MCP drift
+
+on:
+  schedule:
+    # Monday 06:17 UTC. Off the hour on purpose: scheduled jobs that ask for
+    # :00 all fire into the same minute across GitHub.
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  drift:
+    name: Documented tools still exist
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Compare skills against the live tools/list
+        env:
+          PUBLORA_DRIFT_KEY: ${{ secrets.PUBLORA_DRIFT_KEY }}
+        # --require-key so a missing or renamed secret fails loudly. A drift
+        # check that quietly stops running is worse than no drift check.
+        run: python3 scripts/check_mcp_drift.py --require-key
