@@ -1,8 +1,9 @@
 name: Verify skills
 
 on:
+  # No branch filter on pull_request: a stacked PR targets its parent branch,
+  # not main, and those are exactly the changes that most need checking.
   pull_request:
-    branches: [main]
   push:
     branches: [main]
 
