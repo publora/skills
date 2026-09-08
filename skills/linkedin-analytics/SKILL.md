@@ -135,6 +135,14 @@ Post a comment on a LinkedIn post (max 1,250 characters).
 - `message`: Comment text (max 1,250 characters)
 - `parentComment` (optional): Comment URN for nested replies
 
+### linkedin_delete_comment
+Remove a comment you made.
+
+**Parameters:**
+- `postedId`: LinkedIn post URN
+- `commentId`: Comment URN or numeric ID
+- `platformId`: Platform connection ID
+
 ### linkedin_create_reshare
 Reshare an existing post, with optional commentary.
 
@@ -151,14 +159,6 @@ Resolve names to the URNs that @mentions need, so you never hand-write a member 
 **Parameters:**
 - `platformId`: platform connection ID
 - `query`: the name to search for
-
-### linkedin_delete_comment
-Remove a comment you made.
-
-**Parameters:**
-- `postedId`: LinkedIn post URN
-- `commentId`: Comment URN or numeric ID
-- `platformId`: Platform connection ID
 
 ## Example Prompts
 
