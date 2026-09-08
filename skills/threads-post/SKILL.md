@@ -1,36 +1,29 @@
 ---
 name: threads-post
-description: Create and schedule Threads posts with auto-threading, image carousels, and reply control via Publora MCP
+description: Create and schedule Threads posts with image carousels and reply control via Publora MCP. Use when the user wants to post to Meta's Threads. Multi-part threading is currently disabled by the platform, so long content stays a single post. Not for Instagram (use instagram-post) or X threads (use x-post).
 ---
 
 # Threads Post
 
-Create and schedule posts on Meta's Threads using the Publora MCP server. Supports auto-threading for long content, image carousels (2-10 images), and reply control settings.
+Create and schedule posts on Meta's Threads using the Publora MCP server. Supports single posts, image carousels (2-20 images) and reply control. Multi-part threading is disabled by the platform connection right now.
 
 ## Prerequisites
 
-**Plans:** Free Starter (15 posts/month), Pro, Premium
+**Plans:** Works on the free Starter plan. Current limits and pricing: [publora.com/pricing](https://publora.com/pricing).
 
 ### Getting Started
 
 1. **Create account** at [publora.com/register](https://publora.com/register) (free)
 2. **Connect Threads** via Instagram OAuth in [Publora Dashboard](https://app.publora.com/dashboard)
-3. **Get API key** at [publora.com/settings/api](https://app.publora.com/dashboard/api)
-4. **Configure MCP** in Claude Desktop (`~/.claude/claude_desktop_config.json`):
+3. **Get API key** at [app.publora.com/dashboard/api](https://app.publora.com/dashboard/api)
+4. **Connect your agent** to the MCP server at `https://mcp.publora.com`, authenticating with `Authorization: Bearer sk_YOUR_API_KEY`. In Claude Code:
 
-```json
-{
-  "mcpServers": {
-    "publora": {
-      "type": "http",
-      "url": "https://mcp.publora.com",
-      "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
-      }
-    }
-  }
-}
+```bash
+claude mcp add publora --transport http https://mcp.publora.com \
+  --header "Authorization: Bearer sk_YOUR_API_KEY"
 ```
+
+   Claude Desktop, Cursor, Codex, OpenClaw and the claude.ai connector each need a different config file or flow: see [client setup](https://docs.publora.com/mcp/client-setup) for the exact path and snippet.
 
 ### REST API Fallback
 
@@ -60,14 +53,6 @@ curl -X POST "https://api.publora.com/api/v1/create-post" \
 
 📖 **Docs:** [docs.publora.com](https://docs.publora.com)
 
-### Plan Limits
-
-| Plan | Posts/month | Price |
-|------|-------------|-------|
-| Starter | 15 | Free |
-| Pro | 100/account | $2.99/account/month |
-| Premium | 500/account | $9.99/account/month |
-
 ## Platform Limits
 
 | Feature | Limit |
@@ -75,11 +60,11 @@ curl -X POST "https://api.publora.com/api/v1/create-post" \
 | Characters per post | 500 |
 | Hashtags | 1 per post maximum |
 | Links | 5 per post maximum |
-| Images per carousel | 2-10 |
+| Images per carousel | 2-20 |
 | Image size | 8 MB |
 | Image formats | JPEG, PNG (WebP auto-converted) |
 | Video duration | 5 minutes |
-| Video size | 500 MB |
+| Video size | 1 GB |
 | Video formats | MP4, MOV |
 | Posts per day | 250 |
 | Replies per day | 1,000 |
@@ -92,39 +77,33 @@ Create a new Threads post or thread.
 **Parameters:**
 - `platforms`: Array with your Threads connection ID (e.g., `["threads-12345"]`)
 - `content`: Post text (auto-threads if over 500 chars)
-- `scheduledTime`: ISO 8601 datetime (**required** - for immediate posting, use current time + 1 minute)
+- `scheduledTime`: ISO 8601 UTC datetime. **Optional**: omit it and the post is created as a draft. Send a future time to schedule. A time five or more minutes in the past is rejected with `SCHEDULED_TIME_IN_PAST`, so for immediate posting use the current time plus a minute.
+- `mediaUrls`: up to 10 public **https** image or video URLs. Publora downloads them server-side and attaches them *before* validation, so media and scheduling happen in one call. This is the one-shot alternative to the draft then `get_upload_url` then `complete_media` flow. Ingestion is rate-limited to 60 URLs per hour.
 
 ### get_upload_url
 Get a presigned URL to upload images.
 
-### list_posts / update_post / delete_post
-Manage your scheduled and draft posts.
+### complete_media
+Finalize a file uploaded through `get_upload_url`, after the presigned `PUT` succeeds. Optional, because scheduling also finalizes pending media, but calling it early surfaces format and probe errors before publish. Not needed for media attached with `mediaUrls`.
 
-## Auto-Threading
+**Parameters:**
+- `mediaId`: the id returned by `get_upload_url`
 
-When content exceeds 500 characters, Publora automatically creates a connected thread:
+### list_connections
+List your connected accounts with their platform IDs. Call this first and copy the IDs verbatim; they are never guessable.
 
-1. **Smart splitting**: Content is split at paragraph breaks (`\n\n`), then sentence boundaries (`. `, `! `, `? `), then word boundaries
-2. **Auto-numbering**: Each part gets `(1/N)`, `(2/N)`, etc. at the end
-3. **Reply chain**: Posts are connected using Threads' `reply_to_id` parameter
+### list_posts / get_post / update_post / delete_post
+Manage scheduled and draft posts. `update_post` also patches `content` and `platforms` on a draft or scheduled post, so fixing a typo or retargeting no longer means delete and recreate. `delete_media` and `prune_media_reference` clean up uploaded files.
 
-### Manual Thread Breaks
+## Long Content
 
-Use `---` on its own line to force a thread break:
+Threads posts are capped at 500 characters and **Publora's multi-part threading is currently disabled** while the Threads app connection is being restored. Content over the limit is not split automatically, so:
 
-```
-This is my first post in the thread.
+- Keep the post inside 500 characters, or
+- Publish the parts yourself as separate posts, or
+- Move the long-form version to a platform that threads today (X) and link to it.
 
----
-
-This is my second post in the thread.
-
----
-
-And this is my third post!
-```
-
-Or use explicit markers `[1/3]`, `[2/3]`, `[3/3]` (square brackets are preserved as written).
+Manual `---` separators and `[1/3]` markers are preserved as written but do **not** create a connected reply chain right now. Contact support@publora.com for the restore timeline.
 
 ## Reply Control
 
@@ -162,11 +141,14 @@ Post this to Threads:
 Create a Threads carousel with these 5 product evolution screenshots.
 Caption: "From concept to launch - our 6-month journey. #buildinpublic"
 ```
-Note: Requires 2-10 images. Videos in carousels are not supported.
+Note: Requires 2-20 images. Videos in carousels are not supported.
 
-### Long-Form Thread
+### Long Content (published as separate posts)
+
+Threading is disabled, so ask for the parts explicitly:
+
 ```
-Create a Threads thread from this content:
+Post this to Threads as separate posts:
 "Thread: 7 mistakes I made as a first-time founder
 
 ---
@@ -209,5 +191,5 @@ Schedule this for tomorrow at 10 AM:
 | "Account not connected" | Threads/Instagram OAuth expired | Reconnect via Publora dashboard |
 | "Content too long" | Post exceeds 500 chars and threading failed | Manually add `---` breaks |
 | "Media upload failed" | Wrong format or size | Check: images < 8 MB, JPEG/PNG only |
-| "Carousel requires 2-10 items" | Wrong number of images | Ensure 2-10 images for carousel |
+| "Carousel requires 2-20 items" | Wrong number of images | Ensure 2-20 images for carousel |
 | 250 posts/day exceeded | Rate limit reached | Wait 24 hours |
