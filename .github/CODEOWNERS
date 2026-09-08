@@ -1,0 +1,7 @@
+# Content changes need one approval; anything that guards against drift needs two.
+*                       @publora/publora-team @sergebulaev @imakarov
+
+# The checks are what stop the next round of stale facts reaching users.
+/.github/               @publora/publora-team @sergebulaev
+/scripts/               @publora/publora-team @sergebulaev
+/CONTRIBUTING.md        @publora/publora-team @sergebulaev

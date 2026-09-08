@@ -1,0 +1,20 @@
+{
+  "name": "publora-skills",
+  "description": "Nine official Publora skills that let an AI agent post and schedule to LinkedIn, X, Instagram, Threads, TikTok, YouTube, Facebook, Bluesky, Mastodon and Telegram through the Publora MCP server, with drafts approved before anything is published.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Publora",
+    "url": "https://github.com/publora"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/publora/skills",
+  "keywords": [
+    "publora",
+    "mcp",
+    "social-media",
+    "scheduling",
+    "claude-skills",
+    "codex-skills",
+    "ai-agents"
+  ]
+}
