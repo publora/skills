@@ -26,6 +26,7 @@ PATHS_TO_COPY = [
     "assets",
     "README.md",
     "LICENSE",
+    "SECURITY.md",
 ]
 
 # Repo plumbing has no business inside an installed plugin.
