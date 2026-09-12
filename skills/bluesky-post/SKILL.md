@@ -1,11 +1,11 @@
 ---
 name: bluesky-post
-description: Use when the user wants to post or schedule to Bluesky through Publora. Handles the 300-character cap, auto-detected hashtags and links, up to 4 images with alt text, and videos. Needs a Bluesky app password, never the main password. Not for Mastodon (use social-post).
+description: Use when the user wants to post or schedule to Bluesky through Publora. Handles the 300-character cap, auto-detected hashtags and links, up to 4 images, and videos. Alt text cannot be set through the API. Needs a Bluesky app password, never the main password. Not for Mastodon (use social-post).
 ---
 
 # Bluesky Post
 
-Create and schedule posts to Bluesky using the Publora MCP server. Supports text posts with auto-detected hashtags and URLs, images with alt text, and videos.
+Create and schedule posts to Bluesky using the Publora MCP server. Supports text posts with auto-detected hashtags and URLs, images and videos.
 
 ## Prerequisites
 
@@ -66,7 +66,7 @@ Example IDs: `bluesky-did:plc:abc123xyz`, `bluesky-did:plc:def456uvw`
 | Video duration | 3 minutes |
 | Video size | 50-100 MB (based on duration) |
 | Videos per day | 25 |
-| Alt text | 2,000 characters per image |
+| Alt text | 2,000 characters on Bluesky itself, but **not settable through this API** (see below) |
 
 ### Video Size Tiers
 
@@ -95,7 +95,6 @@ Create a new Bluesky post.
 - `content`: Post text (up to 300 characters)
 - `scheduledTime`: ISO 8601 UTC datetime. **Optional**: omit it and the post is created as a draft. Send a future time to schedule. A time five or more minutes in the past is rejected with `SCHEDULED_TIME_IN_PAST`, so for immediate posting use the current time plus a minute.
 - `mediaUrls`: up to 10 public **https** image or video URLs. Publora downloads them server-side and attaches them *before* validation, so media and scheduling happen in one call. This is the one-shot alternative to the draft then `get_upload_url` then `complete_media` flow. Ingestion is rate-limited to 60 URLs per hour.
-- `altTexts`: Array of alt text for images (optional)
 
 ### get_upload_url
 Get presigned URL for media uploads.
@@ -115,6 +114,21 @@ Finalize a file uploaded through `get_upload_url`, after the presigned `PUT` suc
 ### list_connections
 List your connected accounts with their platform IDs. Call this first and copy the IDs verbatim; they are never guessable.
 
+### post_stats
+Engagement counters for a published Bluesky post: reactions, comments, reposts, quotes and bookmarks. Live at request time, cached for roughly two hours.
+
+**Parameters:**
+- `platform`: `bluesky`
+- `platformId`: your Bluesky connection ID
+- `postedIds`: the published post ids to look up
+
+### profile_stats
+Followers, following and post count for the connected account.
+
+**Parameters:**
+- `platform`: `bluesky`
+- `platformId`: your Bluesky connection ID
+
 ### list_posts / get_post / update_post / delete_post
 Manage scheduled and draft posts. `update_post` also patches `content` and `platforms` on a draft or scheduled post, so fixing a typo or retargeting no longer means delete and recreate. `delete_media` and `prune_media_reference` clean up uploaded files.
 
@@ -127,12 +141,10 @@ Post this to Bluesky:
 ```
 Hashtags and URLs are automatically made clickable.
 
-### Post with Image and Alt Text
+### Post with Image
 ```
 Post this to Bluesky with a dashboard screenshot:
 "Our new analytics view is live! #buildinpublic"
-
-Alt text: "Screenshot of analytics dashboard showing user growth charts"
 ```
 
 ### Multiple Images
@@ -156,6 +168,14 @@ Schedule this for tomorrow at 10 AM:
 
 ## Important Restrictions
 
+0. **Alt text cannot be set through the API.** The Bluesky publisher reads an `alt`
+   property on media, but nothing persists it: neither the presigned upload flow nor
+   `mediaUrls` stores it, and an `altTexts` value sent to `create-post` is silently
+   ignored. `platformSettings` is no help either, since Bluesky is rejected there with
+   `400 PLATFORM_SETTING_UNKNOWN`. Post the image, then add alt text in the Bluesky app.
+   Do not tell the user their alt text was published.
+
+
 1. **App password required**: You must use a Bluesky app password, NOT your main account password. Generate one at Settings > App Passwords.
 
 2. **All images converted to JPEG**: Regardless of input format (PNG, WebP, GIF), all images are converted to JPEG before upload.
@@ -173,7 +193,7 @@ Schedule this for tomorrow at 10 AM:
 ### Content
 1. **Concise posts**: 300 chars is shorter than Twitter - be punchy
 2. **Natural hashtags**: 1-2 relevant hashtags work well
-3. **Alt text**: Always add alt text for accessibility
+3. **Alt text**: worth adding, but you have to do it in the Bluesky app after posting; the API cannot carry it
 4. **URLs work**: Links are clickable (unlike some platforms)
 
 ### Timing
