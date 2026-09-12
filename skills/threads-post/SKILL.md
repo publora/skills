@@ -116,7 +116,7 @@ Control who can reply to your posts via REST API `platformSettings`:
 | `"accounts_you_follow"` | Only accounts you follow can reply |
 | `"mentioned_only"` | Only mentioned accounts can reply |
 
-Note: `platformSettings` is not available via MCP - use REST API for reply control.
+Note: `platformSettings` is accepted by the MCP `create_post` and `update_post` tools as well as over REST. The schema is **strict**: a mistyped platform or key is rejected with a validation error rather than silently dropped.
 
 ## Important Restrictions
 

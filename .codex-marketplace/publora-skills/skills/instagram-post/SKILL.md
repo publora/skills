@@ -1,6 +1,6 @@
 ---
 name: instagram-post
-description: Use when the user wants to post or schedule to Instagram through Publora: a single image, a 2-10 image carousel, a Reel or a Story. Requires a Business account and JPEG images; PNG and text-only posts are rejected by the API. Not for Threads (use threads-post).
+description: Use when the user wants to post or schedule to Instagram through Publora: a single image, a 2-10 image carousel, a Reel or a Story. Requires a Business account and an image or video; text-only posts are rejected by the API. Not for Threads (use threads-post).
 ---
 
 # Instagram Post
@@ -64,7 +64,7 @@ These limits are specific to the Instagram Graph API and differ from native app 
 
 | Feature | API Limit |
 |---------|-----------|
-| **Formats** | **JPEG only** (PNG is NOT supported and will fail!) |
+| **Formats** | JPEG, PNG, WebP (WebP is auto-converted). Animated GIF, BMP and TIFF are rejected. |
 | Max file size | 8 MB |
 | Carousel images | 2-10 (native app allows 20) |
 | Aspect ratios | 4:5 (portrait) to 1.91:1 (landscape) |
@@ -140,7 +140,7 @@ Control how videos are published via `platformSettings`:
 |---------|--------|---------|-------------|
 | `videoType` | `"REELS"`, `"STORIES"` | `"REELS"` | Determines how videos are published |
 
-Note: `platformSettings` is not available via MCP - use REST API for video type control.
+Note: `platformSettings` is accepted by the MCP `create_post` and `update_post` tools as well as over REST. The schema is **strict**: a mistyped platform or key is rejected with a validation error rather than silently dropped.
 
 ## Examples
 
@@ -151,7 +151,7 @@ Post this to Instagram:
 
 [Attach JPEG image]
 ```
-**Important:** Image must be JPEG format. PNG will be rejected.
+**Formats:** JPEG, PNG and WebP all work; WebP is converted before publishing.
 
 ### Carousel Post
 ```
@@ -182,7 +182,7 @@ Schedule this for tomorrow at 10 AM:
 
 ## Important Restrictions
 
-1. **JPEG only for images**: PNG, GIF, WebP are NOT supported by the Instagram API. Convert to JPEG before uploading.
+1. **Animated GIF, BMP and TIFF are rejected.** JPEG, PNG and WebP are accepted, with WebP auto-converted.
 
 2. **Business account required**: Personal and Creator accounts cannot post via API. Only Business accounts work.
 
