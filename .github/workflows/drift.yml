@@ -22,3 +22,7 @@ jobs:
         # --require-key so a missing or renamed secret fails loudly. A drift
         # check that quietly stops running is worse than no drift check.
         run: python3 scripts/check_mcp_drift.py --require-key
+      - name: Compare stated platform limits against the API
+        env:
+          PUBLORA_DRIFT_KEY: ${{ secrets.PUBLORA_DRIFT_KEY }}
+        run: python3 scripts/check_platform_limits.py --require-key

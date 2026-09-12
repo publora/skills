@@ -19,7 +19,7 @@ So the skills link facts instead of copying them:
 |---|---|---|
 | Prices, plan limits | [publora.com/pricing.md](https://publora.com/pricing.md) | a link, never a number |
 | MCP tools and signatures | live `tools/list`, [tools-reference](https://docs.publora.com/mcp/tools-reference) | only tools that exist today |
-| Platform limits | `GET /api/v1/platform-limits` | numbers checked against the endpoint |
+| Platform limits | `GET /api/v1/platform-limits` | numbers checked against the endpoint by `check_platform_limits.py` |
 | Client config paths | [mcp/client-setup](https://docs.publora.com/mcp/client-setup) | a link, not a copied path |
 | REST contract | [publora-api-docs](https://github.com/publora/publora-api-docs) | follow its changelog |
 
@@ -64,7 +64,8 @@ API with a link to its changelog, and how to update
 ```bash
 python3 scripts/check_skills.py                          # frontmatter, prices, paths, hosts
 python3 scripts/check_links.py                           # every documentation link resolves
-PUBLORA_DRIFT_KEY=sk_... python3 scripts/check_mcp_drift.py   # documented tools still exist
+PUBLORA_DRIFT_KEY=sk_... python3 scripts/check_mcp_drift.py       # tools and their parameters
+PUBLORA_DRIFT_KEY=sk_... python3 scripts/check_platform_limits.py # stated limits vs the API
 python3 scripts/sync_codex_marketplace.py                # regenerate the Codex package
 ```
 
