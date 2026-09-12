@@ -8,6 +8,40 @@ corrected fact.
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-09-12
+
+### Fixed
+
+Eight factual claims that contradicted the API, each verified against the live
+`tools/list` schema or `publora-api-docs` rather than against prose.
+
+- **`linkedin_create_reshare` named the wrong required parameter.** The skill
+  said `postedId`; the tool requires `parent`. Every reshare an agent attempted
+  from these instructions failed validation. Optional `visibility` added.
+- **`linkedin_list_mentionables` named parameters it does not have.** It takes
+  `q` and `limit` and requires neither; there is no `platformId`.
+- **`platformSettings` is available through MCP.** Five skills said it was REST
+  only, so agents abandoned MCP for no reason.
+- **TikTok is not video-only.** It takes image carousels of up to 35 JPEG, PNG
+  or WebP images at 20 MB each. Agents were refusing valid carousel requests.
+- **Instagram is not JPEG-only.** JPEG, PNG and WebP all work, WebP converted
+  before publishing. Animated GIF, BMP and TIFF are what get rejected.
+- **Video ceilings.** YouTube 256 GB and Facebook 2 GB, not 512 MB. That figure
+  belongs to the dashboard's `/media/process-video` multipart endpoint and has
+  nothing to do with presigned API or MCP uploads.
+- **LinkedIn images** are gated at 36,152,320 pixels with a 50 MB ceiling, not
+  5 MB.
+- **`showCaptionAboveMedia` is rejected.** Sending it returns
+  `400 PLATFORM_SETTING_UNKNOWN`; removed, with a note saying why.
+
+### Known gap
+
+`check_mcp_drift.py` verifies that documented tools exist. It passes clean on
+every item above: a correctly named tool with invented parameters, a capability
+denied, a limit off by three orders of magnitude. Extending it to compare
+parameter names against each tool's `inputSchema` would catch the first two
+mechanically; the rest want `GET /api/v1/platform-limits` as a source of truth.
+
 ## [1.0.0] - 2026-09-08
 
 First tagged release. The skills had been shipping without versions since March,
@@ -53,5 +87,6 @@ so users had no way to tell what they were running or what had changed.
   platform named, "Not for X" sentinel). This is the field agents and directories
   match on; they were 75-113 characters of prose.
 
-[Unreleased]: https://github.com/publora/skills/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/publora/skills/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/publora/skills/releases/tag/v1.1.0
 [1.0.0]: https://github.com/publora/skills/releases/tag/v1.0.0
