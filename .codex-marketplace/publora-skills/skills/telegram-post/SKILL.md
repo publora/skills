@@ -125,10 +125,11 @@ Telegram-specific options available via REST API `platformSettings.telegram`:
 |--------|-------------|
 | `disableNotification` | Send silently (no sound) |
 | `disableWebPagePreview` | No link preview cards |
-| `showCaptionAboveMedia` | Caption above image/video |
 | `protectContent` | Prevent forwarding/saving |
 
-Note: `platformSettings` is not available via MCP - use REST API for these options.
+Caption-above-media is **not** settable: `showCaptionAboveMedia` is not an accepted key and sending it returns `400 PLATFORM_SETTING_UNKNOWN`.
+
+Note: `platformSettings` is accepted by the MCP `create_post` and `update_post` tools as well as over REST. The schema is **strict**: a mistyped platform or key is rejected with a validation error rather than silently dropped.
 
 ## Examples
 

@@ -147,9 +147,10 @@ Remove a comment you made.
 Reshare an existing post, with optional commentary.
 
 **Parameters:**
-- `postedId`: the original post's **share URN** (`urn:li:share:...` or `urn:li:ugcPost:...`)
 - `platformId`: platform connection ID
-- `commentary` (optional): your text above the reshare
+- `parent`: the post to reshare, as a **share URN** (`urn:li:share:...` or `urn:li:ugcPost:...`). Note the name: this tool takes `parent`, not `postedId` like the reaction and comment tools.
+- `commentary` (optional): your text above the reshare, up to 3,000 characters
+- `visibility` (optional): `PUBLIC` or `CONNECTIONS`, default `PUBLIC`. `CONNECTIONS` is for personal accounts.
 
 Note: a LinkedIn feed URL carries an `activity` id, which is not always the same as the share id. Use the `postedId` returned by `get_post`, not a hand-converted activity id.
 
@@ -157,8 +158,10 @@ Note: a LinkedIn feed URL carries an `activity` id, which is not always the same
 Resolve names to the URNs that @mentions need, so you never hand-write a member id.
 
 **Parameters:**
-- `platformId`: platform connection ID
-- `query`: the name to search for
+- `q` (optional): the name to search for
+- `limit` (optional): how many results to return
+
+Both are optional, and this tool takes no `platformId`: it searches across the account rather than one connection.
 
 ## Example Prompts
 

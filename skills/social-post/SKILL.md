@@ -72,8 +72,8 @@ curl -X POST "https://api.publora.com/api/v1/create-post" \
 | Video title | 100 characters |
 | Video description | 5,000 characters |
 | Video duration | 12 hours |
-| Video size | 512 MB (Publora limit) |
-| Video formats | MP4, MOV, AVI, MKV, WebM |
+| Video size | 256 GB |
+| Video formats | MP4, MOV, AVI, WebM |
 
 ### Platform Settings (via REST API)
 
@@ -93,7 +93,7 @@ curl -X POST "https://api.publora.com/api/v1/create-post" \
 | `privacy` | `"public"`, `"unlisted"`, `"private"` | `"public"` |
 | `title` | string | Derived from first 70 chars of content |
 
-Note: `platformSettings` is not available via MCP - use REST API for these settings.
+Note: `platformSettings` is accepted by the MCP `create_post` and `update_post` tools as well as over REST. The schema is **strict**: a mistyped platform or key is rejected with a validation error rather than silently dropped.
 
 ### YouTube Examples
 
@@ -128,7 +128,7 @@ Upload this as an unlisted video (for internal sharing):
 | Images | Up to 10 per post |
 | Image size | 10 MB |
 | Video duration | 45 minutes |
-| Video size | 512 MB (Publora limit) |
+| Video size | 2 GB |
 
 ### Multi-Page Support
 
@@ -261,3 +261,5 @@ Publora handles platform-specific requirements automatically:
 | Mastodon | "Content too long" | Shorten to under 500 chars |
 | Mastodon | "Too many images" | Reduce to 4 or fewer |
 | All | Rate limit errors | Wait and retry |
+
+> The 512 MB figure that used to appear here belongs to the dashboard's `/media/process-video` multipart endpoint. API and MCP uploads are presigned and use the platform ceilings above.

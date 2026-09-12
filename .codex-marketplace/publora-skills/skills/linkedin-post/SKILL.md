@@ -62,7 +62,7 @@ Example IDs: `linkedin-Tz9W5i6ZYG`, `linkedin-abc123xyz`
 | Characters | 3,000 max |
 | Visible before "see more" | First 210 characters |
 | Images | Up to 10 (grid layout, not swipeable carousel) |
-| Image size | 5 MB max |
+| Image size | 36,152,320 pixels is the primary gate; 50 MB ceiling |
 | Image formats | JPEG, PNG, GIF, WebP (WebP auto-converted) |
 | Video duration | 30 minutes |
 | Video size | 500 MB max |

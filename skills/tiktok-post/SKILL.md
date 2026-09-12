@@ -1,6 +1,6 @@
 ---
 name: tiktok-post
-description: Use when the user wants to upload or schedule a TikTok video through Publora, with privacy, comment, duet, stitch and commercial-disclosure settings. Video only, 3 seconds to 10 minutes, 23+ FPS. Unaudited apps can publish private videos only. Not for Reels (use instagram-post).
+description: Use when the user wants to upload or schedule a TikTok video through Publora, with privacy, comment, duet, stitch and commercial-disclosure settings. Video runs 3 seconds to 10 minutes at 23+ FPS; carousels take up to 35 images. Unaudited apps can publish private videos only. Not for Reels (use instagram-post).
 ---
 
 # TikTok Post
@@ -168,7 +168,7 @@ TikTok has 7 platform-specific settings controlled via `platformSettings`:
 
 **Note:** If `commercialContent` is `true`, at least one of `brandOrganic` or `brandedContent` must also be `true`.
 
-Note: `platformSettings` is not available via MCP - use REST API for these settings.
+Note: `platformSettings` is accepted by the MCP `create_post` and `update_post` tools as well as over REST. The schema is **strict**: a mistyped platform or key is rejected with a validation error rather than silently dropped.
 
 ## Critical Restrictions
 
@@ -178,14 +178,11 @@ Note: `platformSettings` is not available via MCP - use REST API for these setti
 
 To post public videos, your app must be audited by TikTok.
 
-### 2. Video Only Platform
+### 2. Media Required, Video or Image Carousel
 
-TikTok does NOT support:
-- Text-only posts
-- Image posts
-- Photo carousels
+TikTok does NOT support text-only posts: every post needs media.
 
-Every post must include a video.
+It does take **image carousels**: up to 35 images, JPEG, PNG or WebP, 20 MB each. A post is either a carousel or a single video, never both.
 
 ### 3. Minimum 23 FPS
 
