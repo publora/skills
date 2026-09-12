@@ -8,6 +8,32 @@ corrected fact.
 
 ## [Unreleased]
 
+## [1.0.3] - 2026-09-12
+
+### Fixed
+
+- **`bluesky-post` documented `altTexts` on `create_post`.** No such parameter
+  exists. The platform doc is explicit that the value is not processed and that
+  the media model never persists an `alt` property, and `platformSettings`
+  rejects Bluesky with `400 PLATFORM_SETTING_UNKNOWN`, so alt text cannot be set
+  through the API at all. It was promised in the description, the parameter
+  list, an example and a best practice. Found by the parameter check below on
+  its first run.
+
+### Added
+
+- **`check_mcp_drift.py` now verifies parameters, not just tool names.** Every
+  fix in 1.0.2 passed the old check clean: it asked whether a tool exists and
+  never whether its documented parameters do. It now compares each against the
+  tool's `inputSchema` and reports required parameters a skill never mentions.
+- **`check_platform_limits.py`** compares stated character limits, image counts
+  and video-only claims against `GET /api/v1/platform-limits`, which is
+  generated rather than hand-written. It checks only what parses unambiguously:
+  a check that cries wolf on prose is one people learn to skip.
+- **`post_stats` and `profile_stats`** documented in `bluesky-post`. Both are
+  live tools that no skill mentioned, returning engagement counters and follower
+  counts for Bluesky and Mastodon.
+
 ## [1.0.2] - 2026-09-12
 
 ### Fixed
@@ -87,6 +113,7 @@ so users had no way to tell what they were running or what had changed.
   platform named, "Not for X" sentinel). This is the field agents and directories
   match on; they were 75-113 characters of prose.
 
-[Unreleased]: https://github.com/publora/skills/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/publora/skills/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/publora/skills/releases/tag/v1.0.3
 [1.0.2]: https://github.com/publora/skills/releases/tag/v1.0.2
 [1.0.0]: https://github.com/publora/skills/releases/tag/v1.0.0
