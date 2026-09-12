@@ -8,7 +8,7 @@ corrected fact.
 
 ## [Unreleased]
 
-## [1.1.0] - 2026-09-12
+## [1.0.2] - 2026-09-12
 
 ### Fixed
 
@@ -87,6 +87,6 @@ so users had no way to tell what they were running or what had changed.
   platform named, "Not for X" sentinel). This is the field agents and directories
   match on; they were 75-113 characters of prose.
 
-[Unreleased]: https://github.com/publora/skills/compare/v1.1.0...HEAD
-[1.1.0]: https://github.com/publora/skills/releases/tag/v1.1.0
+[Unreleased]: https://github.com/publora/skills/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/publora/skills/releases/tag/v1.0.2
 [1.0.0]: https://github.com/publora/skills/releases/tag/v1.0.0
