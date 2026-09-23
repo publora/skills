@@ -24,6 +24,7 @@ ALLOWED_HOSTS = {
     "docs.publora.com", "mcp.publora.com",
     "github.com", "t.me",
     "img.shields.io",  # README badges
+    "claude.ai",       # our Claude connectors directory listing
     "semver.org",      # versioning spec cited in CHANGELOG
     "example.com", "docs.example.com",
 }
