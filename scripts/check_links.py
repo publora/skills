@@ -27,6 +27,7 @@ SKIP_HOSTS = {
     "mcp.publora.com",    # JSON-RPC endpoint, always 401 unauthenticated
     "example.com", "docs.example.com",  # deliberate placeholders
     "img.shields.io",     # badge service, renders per-request
+    "claude.ai",          # bot wall: 403 to scripted requests, listing checked by hand
 }
 
 # A changelog references the release created when its version is tagged, so

@@ -6,7 +6,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/github/v/release/publora/skills?color=0F766E&label=release" alt="Latest release">
-  <img src="https://img.shields.io/badge/MCP_tools-16-0F766E" alt="16 MCP tools">
+  <img src="https://img.shields.io/badge/MCP_tools-18-0F766E" alt="18 MCP tools">
   <img src="https://img.shields.io/badge/Claude_Code-Compatible-D97757?logo=anthropic&logoColor=white" alt="Claude Code compatible">
   <img src="https://img.shields.io/badge/Codex-Compatible-111827" alt="Codex compatible">
   <img src="https://img.shields.io/badge/License-MIT-22C55E.svg" alt="MIT License">
@@ -19,18 +19,20 @@ Your agent drafts, you approve, Publora publishes. One integration instead of te
 
 ## Install
 
-Get an API key at [app.publora.com/dashboard/api](https://app.publora.com/dashboard/api), then connect your agent:
+**Using Claude?** Install from the connectors directory — no API key, no config: [claude.ai/directory/publora](https://claude.ai/directory/publora)
+
+For every other agent, connect as below. Clients that cannot sign in through the browser need an API key from [app.publora.com/dashboard/api](https://app.publora.com/dashboard/api).
 
 | Client | How |
 |---|---|
-| **Any agent** (skills CLI) | `npx skills add publora/skills` |
-| **Claude Code** | `claude mcp add publora --transport http https://mcp.publora.com --header "Authorization: Bearer sk_YOUR_KEY"` |
+| **Claude** (web, desktop, mobile) | [claude.ai/directory/publora](https://claude.ai/directory/publora), select Connect. OAuth, no key |
+| **Claude Code** | `claude mcp add --transport http --scope user publora https://mcp.publora.com/mcp`, then `/mcp` to sign in. No key needed |
 | **Claude Code** (plugin) | `/plugin marketplace add publora/skills` |
+| **Claude Desktop** | Install from the directory like the web app; no config file ([details](https://docs.publora.com/mcp/client-setup)) |
+| **Any agent** (skills CLI) | `npx skills add publora/skills` |
 | **Codex** | add `publora/skills` as a marketplace, then install the `publora-skills` plugin |
 | **Cursor** | Settings, MCP, add `https://mcp.publora.com` ([guide](https://docs.publora.com/guides/cursor-ai)) |
-| **Claude Desktop** | `~/Library/Application Support/Claude/claude_desktop_config.json` on macOS, `%APPDATA%\Claude\claude_desktop_config.json` on Windows ([snippet](https://docs.publora.com/mcp/client-setup)) |
 | **OpenClaw** | [docs.publora.com/mcp/openclaw](https://docs.publora.com/mcp/openclaw) |
-| **claude.ai connector** | OAuth, no key needed ([setup](https://docs.publora.com/mcp/client-setup)) |
 
 The free Starter plan covers every platform except X. Current limits and pricing: [publora.com/pricing](https://publora.com/pricing).
 
@@ -39,7 +41,7 @@ The free Starter plan covers every platform except X. Current limits and pricing
 | Skill | Use it when | It never |
 |---|---|---|
 | [`linkedin-post`](./skills/linkedin-post/SKILL.md) | the user wants a LinkedIn post, a multi-image grid, a PDF document or an @mention | builds a swipeable carousel, which the API reserves for sponsored content |
-| [`linkedin-analytics`](./skills/linkedin-analytics/SKILL.md) | the user asks how a post or the account performed, or wants to react, comment or reshare | calls an analytics MCP tool; statistics are REST only |
+| [`linkedin-analytics`](./skills/linkedin-analytics/SKILL.md) | the user asks how a post or the account performed, or wants to react, comment or reshare | calls an MCP tool for LinkedIn statistics, which are REST only |
 | [`x-post`](./skills/x-post/SKILL.md) | the user wants a tweet or a thread auto-split past 280 characters | works on the free plan, since X API costs are passed through |
 | [`threads-post`](./skills/threads-post/SKILL.md) | the user wants a Threads post or an image carousel | splits long content into a connected thread, which the platform currently disables |
 | [`instagram-post`](./skills/instagram-post/SKILL.md) | the user has a JPEG, a carousel, a Reel or a Story and a Business account | sends PNG, or posts text with no media |
@@ -50,9 +52,11 @@ The free Starter plan covers every platform except X. Current limits and pricing
 
 ## How it works
 
-The MCP server exposes **16 tools**:
+The MCP server exposes **18 tools**:
 
 **Posts and media** `list_connections`, `list_posts`, `create_post`, `get_post`, `update_post`, `delete_post`, `get_upload_url`, `complete_media`, `delete_media`, `prune_media_reference`
+
+**Engagement counts** `post_stats`, `profile_stats` — Mastodon and Bluesky only, on plans with analytics
 
 **LinkedIn engagement** `linkedin_create_reaction`, `linkedin_delete_reaction`, `linkedin_create_comment`, `linkedin_delete_comment`, `linkedin_create_reshare`, `linkedin_list_mentionables`
 
@@ -66,7 +70,7 @@ Three things worth knowing before your agent writes its first call:
 
 ## REST fallback
 
-Every MCP tool has a REST twin at `https://api.publora.com/api/v1`, authenticated with the `x-publora-key` header rather than a bearer token. Some things are REST only, including LinkedIn statistics and the per-platform `platformSettings` block that controls Instagram video type, TikTok privacy, YouTube visibility, Telegram delivery flags and Threads reply control.
+Every MCP tool has a REST twin at `https://api.publora.com/api/v1`, authenticated with the `x-publora-key` header rather than a bearer token. Some things are REST only, including LinkedIn statistics and workspace (managed-user) administration. The per-platform `platformSettings` block that controls Instagram video type, TikTok privacy, YouTube visibility, Telegram delivery flags and Threads reply control works over both: the MCP `create_post` and `update_post` tools accept it too.
 
 ```bash
 curl -X GET "https://api.publora.com/api/v1/platform-connections" \

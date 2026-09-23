@@ -8,6 +8,23 @@ corrected fact.
 
 ## [Unreleased]
 
+### Fixed
+
+- **The README said the MCP server has 16 tools.** It has 18: `post_stats` and
+  `profile_stats` (engagement counts for Mastodon and Bluesky) were missing from
+  the list and the badge.
+- **The README claimed `platformSettings` is REST only.** The MCP `create_post`
+  and `update_post` tools accept it too.
+- **Install led Claude users to API keys and config files.** Publora has been in
+  the Claude connectors directory since 2026-09-22; the README now starts there,
+  Claude Code signs in with OAuth, and the Claude Desktop row no longer copies a
+  config path.
+
+### Changed
+
+- `claude.ai` joins the allowed link hosts (the directory listing) and the link
+  checker's skip list, since it answers scripted requests with 403.
+
 ## [1.0.3] - 2026-09-12
 
 ### Fixed
