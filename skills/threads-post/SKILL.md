@@ -1,11 +1,11 @@
 ---
 name: threads-post
-description: Create and schedule Threads posts with image carousels and reply control via Publora MCP. Use when the user wants to post to Meta's Threads. Multi-part threading is currently disabled by the platform, so long content stays a single post. Not for Instagram (use instagram-post) or X threads (use x-post).
+description: Create and schedule Threads posts, multi-part chains, image carousels and reply control via Publora MCP. Use when the user wants to post to Meta's Threads, including long content that Publora splits into a connected chain of replies past 500 characters. Not for Instagram (use instagram-post) or X threads (use x-post).
 ---
 
 # Threads Post
 
-Create and schedule posts on Meta's Threads using the Publora MCP server. Supports single posts, image carousels (2-20 images) and reply control. Multi-part threading is disabled by the platform connection right now.
+Create and schedule posts on Meta's Threads using the Publora MCP server. Supports single posts, multi-part chains (connected replies), image carousels (2-20 images) and reply control.
 
 ## Prerequisites
 
@@ -57,7 +57,7 @@ curl -X POST "https://api.publora.com/api/v1/create-post" \
 
 | Feature | Limit |
 |---------|-------|
-| Characters per post | 500 |
+| Characters per post | 500 (per part in a chain) |
 | Hashtags | 1 per post maximum |
 | Links | 5 per post maximum |
 | Images per carousel | 2-20 |
@@ -95,15 +95,17 @@ List your connected accounts with their platform IDs. Call this first and copy t
 ### list_posts / get_post / update_post / delete_post
 Manage scheduled and draft posts. `update_post` also patches `content` and `platforms` on a draft or scheduled post, so fixing a typo or retargeting no longer means delete and recreate. `delete_media` and `prune_media_reference` clean up uploaded files.
 
-## Long Content
+## Multi-Part Chains
 
-Threads posts are capped at 500 characters and **Publora's multi-part threading is currently disabled** while the Threads app connection is being restored. Content over the limit is not split automatically, so:
+Put the whole text in one `content` field. Publora publishes it as a chain of connected replies, each part a reply to the previous one.
 
-- Keep the post inside 500 characters, or
-- Publish the parts yourself as separate posts, or
-- Move the long-form version to a platform that threads today (X) and link to it.
+- **Automatic split:** content over 500 characters is split into a chain instead of being rejected. Splits prefer paragraph breaks, then line breaks, then sentence endings, then word boundaries. Automatically split parts get a ` (1/3)`-style suffix, and 10 of each part's 500 characters are reserved for it, so roughly 490 characters of your text land in each part. Emoji count as 2.
+- **Your own breaks:** a line containing only `---` (with a newline before and after) sets a break. A complete set of `[1/3]`, `[2/3]`, `[3/3]` markers works too. Parts you separate yourself are published exactly as written, with no numbering added. An oversized `---` part is re-split automatically; an oversized `[n/m]` part is rejected with `THREAD_PART_TOO_LONG`.
+- **Media:** attached to the first part only; later parts are text-only.
+- **Permission:** a chain needs `threads_manage_replies` on the connection. Without it the post is rejected with `THREADS_PERMISSION_REQUIRED` **before any part is published**; reconnect the account in Publora Channels and approve every permission. Single posts and carousels don't need it.
+- **Checking the result:** `get_post` returns `isThread: true` and one `threadParts[]` entry per part (`index`, `content`, `status`, `publishedId`). If a chain fails part-way (`THREAD_PARTIALLY_PUBLISHED`) or the outcome is unknown, the published parts are live: publish only the missing parts, never recreate the whole chain.
 
-Manual `---` separators and `[1/3]` markers are preserved as written but do **not** create a connected reply chain right now. Contact support@publora.com for the restore timeline.
+There is no `parts` array and no numbering or threading switch in MCP or REST: `content` is the only input.
 
 ## Reply Control
 
@@ -126,7 +128,7 @@ Note: `platformSettings` is accepted by the MCP `create_post` and `update_post` 
 
 3. **Video carousels not supported**: Publora's carousel implementation supports images only. Standalone video posts work normally.
 
-4. **Multi-threaded posts temporarily unavailable**: Content splitting into multiple connected replies is temporarily disabled. Single posts and carousels continue to work.
+4. **Chains need `threads_manage_replies`**: connections made before that permission was granted must be reconnected before a multi-part chain can publish. Single posts and carousels are unaffected.
 
 ## Examples
 
@@ -143,12 +145,12 @@ Caption: "From concept to launch - our 6-month journey. #buildinpublic"
 ```
 Note: Requires 2-20 images. Videos in carousels are not supported.
 
-### Long Content (published as separate posts)
+### Multi-Part Chain
 
-Threading is disabled, so ask for the parts explicitly:
+Each `---`-separated block becomes its own reply in the chain, published as written with no numbering added:
 
 ```
-Post this to Threads as separate posts:
+Post this to Threads as a thread:
 "Thread: 7 mistakes I made as a first-time founder
 
 ---
@@ -189,7 +191,9 @@ Schedule this for tomorrow at 10 AM:
 | Error | Cause | Solution |
 |-------|-------|----------|
 | "Account not connected" | Threads/Instagram OAuth expired | Reconnect via Publora dashboard |
-| "Content too long" | Post exceeds 500 chars and threading failed | Manually add `---` breaks |
+| `THREADS_PERMISSION_REQUIRED` | Chain needs `threads_manage_replies` | Reconnect Threads in Publora Channels and approve all permissions |
+| `THREAD_PART_TOO_LONG` | A `[n/m]` part exceeds 500 chars | Shorten that part or use `---` breaks, which re-split automatically |
+| `THREAD_PARTIALLY_PUBLISHED` | A part failed after earlier parts published | Read `threadParts` in `get_post`, publish only the missing parts |
 | "Media upload failed" | Wrong format or size | Check: images < 8 MB, JPEG/PNG only |
 | "Carousel requires 2-20 items" | Wrong number of images | Ensure 2-20 images for carousel |
 | 250 posts/day exceeded | Rate limit reached | Wait 24 hours |

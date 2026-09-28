@@ -43,7 +43,7 @@ The free Starter plan covers every platform except X. Current limits and pricing
 | [`linkedin-post`](./skills/linkedin-post/SKILL.md) | the user wants a LinkedIn post, a multi-image grid, a PDF document or an @mention | builds a swipeable carousel, which the API reserves for sponsored content |
 | [`linkedin-analytics`](./skills/linkedin-analytics/SKILL.md) | the user asks how a post or the account performed, or wants to react, comment or reshare | calls an MCP tool for LinkedIn statistics, which are REST only |
 | [`x-post`](./skills/x-post/SKILL.md) | the user wants a tweet or a thread auto-split past 280 characters | works on the free plan, since X API costs are passed through |
-| [`threads-post`](./skills/threads-post/SKILL.md) | the user wants a Threads post or an image carousel | splits long content into a connected thread, which the platform currently disables |
+| [`threads-post`](./skills/threads-post/SKILL.md) | the user wants a Threads post, a multi-part chain or an image carousel | splits content over 500 characters into a connected chain of replies; `---` lines set the breaks |
 | [`instagram-post`](./skills/instagram-post/SKILL.md) | the user has a JPEG, a carousel, a Reel or a Story and a Business account | sends PNG, or posts text with no media |
 | [`tiktok-post`](./skills/tiktok-post/SKILL.md) | the user has a vertical video for TikTok | promises a public post from an unaudited app, where everything lands private |
 | [`telegram-post`](./skills/telegram-post/SKILL.md) | the user wants a channel or group post through a bot | exceeds the 1,024-character media caption or the 50 MB bot video ceiling |

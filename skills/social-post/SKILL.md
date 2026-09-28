@@ -195,7 +195,7 @@ Share this screenshot on Mastodon:
 
 1. **mastodon.social only**: Currently connects only to mastodon.social instance
 2. **Public visibility**: All posts are public by default
-3. **No auto-threading**: Unlike X/Twitter, Mastodon doesn't split long content
+3. **No auto-threading**: Unlike X/Twitter and Threads, Mastodon doesn't split long content
 4. **500-char strict**: Content over 500 characters will be rejected
 
 ---
