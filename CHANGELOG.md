@@ -10,6 +10,13 @@ corrected fact.
 
 ### Fixed
 
+- **`threads-post` said multi-part threading was disabled.** It has been live
+  since 2026-09-14 (`supportsThreading: true`): content over 500 characters is
+  split into a connected chain, `---` lines set the breaks, and a chain needs
+  `threads_manage_replies`. An agent following the skill split long posts into
+  unconnected separate posts. The description, limits, restrictions, example,
+  troubleshooting and the README row now describe chains; `social-post` names
+  Threads alongside X as a platform that splits long content.
 - **The README said the MCP server has 16 tools.** It has 18: `post_stats` and
   `profile_stats` (engagement counts for Mastodon and Bluesky) were missing from
   the list and the badge.
