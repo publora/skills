@@ -21,7 +21,10 @@ Create and schedule posts to Telegram channels and groups using the Publora MCP 
 4. **Add bot to your channel:**
    - Add the bot as **administrator** to your channel/group
    - Grant `can_post_messages` permission
-5. **Connect in Publora** at [Dashboard](https://app.publora.com/dashboard) with bot token and channel name
+5. **Connect in Publora** at [Dashboard](https://app.publora.com/dashboard) with the bot token and the channel:
+   - Public channel: `@username` or `t.me/username`
+   - Private channel: its `-100…` chat ID, or the `t.me/c/…` link of any message in it (Copy Link on the message)
+   - Invite links (`t.me/+…`) are rejected: the Bot API cannot identify a channel from them
 6. **Get API key** at [app.publora.com/dashboard/api](https://app.publora.com/dashboard/api)
 7. **Connect your agent** to the MCP server at `https://mcp.publora.com`, authenticating with `Authorization: Bearer sk_YOUR_API_KEY`. In Claude Code:
 
@@ -50,15 +53,15 @@ curl -X POST "https://api.publora.com/api/v1/create-post" \
   -H "x-publora-key: sk_your_api_key" \
   -H "Content-Type: application/json" \
   -d '{
-    "platforms": ["telegram-1001234567890"],
+    "platforms": ["telegram--1001234567890"],
     "content": "*Announcement*\n\nYour message here",
     "scheduledTime": "2026-03-25T10:00:00Z"
   }'
 ```
 
-**Platform ID Format:** `telegram-{chat_id}` where `{chat_id}` is the channel/group numeric ID from `/platform-connections`.
+**Platform ID Format:** `telegram-{chat_id}` where `{chat_id}` is the channel/group numeric ID from `/platform-connections`. A bot connection's chat ID is negative (`-100…`), so the ID has a double dash. Copy it verbatim; never rebuild it.
 
-Example IDs: `telegram-1001234567890`, `telegram--1002345678901`
+Example IDs: `telegram--1001234567890`, `telegram--1002345678901`
 
 📖 **Full API documentation:** [docs.publora.com](https://docs.publora.com)
 
@@ -97,7 +100,7 @@ Telegram uses its own markdown flavor with **single asterisks** for bold:
 Create a new Telegram post.
 
 **Parameters:**
-- `platforms`: Array with your Telegram connection ID (e.g., `["telegram-1001234567890"]`)
+- `platforms`: Array with your Telegram connection ID (e.g., `["telegram--1001234567890"]`)
 - `content`: Message text (supports markdown)
 - `scheduledTime`: ISO 8601 UTC datetime. **Optional**: omit it and the post is created as a draft. Send a future time to schedule. A time five or more minutes in the past is rejected with `SCHEDULED_TIME_IN_PAST`, so for immediate posting use the current time plus a minute.
 - `mediaUrls`: up to 10 public **https** image or video URLs. Publora downloads them server-side and attaches them *before* validation, so media and scheduling happen in one call. This is the one-shot alternative to the draft then `get_upload_url` then `complete_media` flow. Ingestion is rate-limited to 60 URLs per hour.
@@ -112,7 +115,7 @@ Finalize a file uploaded through `get_upload_url`, after the presigned `PUT` suc
 - `mediaId`: the id returned by `get_upload_url`
 
 ### list_connections
-List your connected accounts with their platform IDs. Call this first and copy the IDs verbatim; they are never guessable.
+List your connected accounts with their platform IDs. Call this first and copy the IDs verbatim; they are never guessable. A private channel has no public username: its `username` is `null`, so match it by `displayName` (the channel title).
 
 ### list_posts / get_post / update_post / delete_post
 Manage scheduled and draft posts. `update_post` also patches `content` and `platforms` on a draft or scheduled post, so fixing a typo or retargeting no longer means delete and recreate. `delete_media` and `prune_media_reference` clean up uploaded files.
@@ -180,7 +183,7 @@ Schedule this for tomorrow at 8 AM Moscow time:
 
 2. **Video max 50 MB**: Bot API limits videos to 50 MB (not 4 GB like regular users). Large videos will fail.
 
-3. **Bot must be admin**: Your bot needs administrator role with `can_post_messages` permission. This is verified at connection time.
+3. **Bot must be admin**: Your bot needs administrator role with `can_post_messages` permission. This is verified at connection time and re-checked by `POST /test-connection/{platformId}`, not before each post.
 
 4. **No mixed media**: A single post cannot contain both images and videos.
 
@@ -209,7 +212,8 @@ Schedule this for tomorrow at 8 AM Moscow time:
 | Error | Cause | Solution |
 |-------|-------|----------|
 | "Bot not admin" | Bot missing admin permissions | Add bot as admin with `can_post_messages` |
-| "Channel not found" | Wrong channel name/ID | Verify `@channelname` or numeric chat ID |
+| "Channel not found" | Wrong channel name/ID, or the bot is not in the channel | Verify `@channelname` or the `-100…` chat ID, and add the bot as an administrator |
+| "Invite links cannot identify a channel for a bot" | A `t.me/+…` invite link was entered | Use the channel's `-100…` chat ID or a `t.me/c/…` message link |
 | `MEDIA_CAPTION_TOO_LONG` | Caption > 1,024 chars | Shorten caption or use text-only post |
 | "Bad Request: file is too big" | File > 50 MB | Compress video/image to under 50 MB |
 | "Mixed media not supported" | Images + video in same post | Use one media type per post |
