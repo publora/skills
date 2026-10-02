@@ -20,6 +20,11 @@ corrected fact.
 - **The README said the MCP server has 16 tools.** It has 18: `post_stats` and
   `profile_stats` (engagement counts for Mastodon and Bluesky) were missing from
   the list and the badge.
+- **The README said the MCP server has 18 tools.** It has 20: `attach_media`
+  (since 2026-09-28) and `account_context` (plan, quotas and schedule horizon,
+  since 2026-10-01) were missing from the list and the badge. The README also
+  names the 12 `company_*` tools clients list for Agency client work, and
+  `social-post` points cross-posts and batches at `account_context`.
 - **The README claimed `platformSettings` is REST only.** The MCP `create_post`
   and `update_post` tools accept it too.
 - **Install led Claude users to API keys and config files.** Publora has been in

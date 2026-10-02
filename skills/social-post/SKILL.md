@@ -248,6 +248,8 @@ Publora handles platform-specific requirements automatically:
 - Facebook gets the text + video
 - Mastodon gets the text (500 char limit applies)
 
+Before cross-posting or scheduling a batch, call `account_context` to check your remaining post quota and the latest date you can schedule.
+
 ---
 
 ## Troubleshooting
