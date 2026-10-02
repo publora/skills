@@ -6,7 +6,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/github/v/release/publora/skills?color=0F766E&label=release" alt="Latest release">
-  <img src="https://img.shields.io/badge/MCP_tools-18-0F766E" alt="18 MCP tools">
+  <img src="https://img.shields.io/badge/MCP_tools-20-0F766E" alt="20 MCP tools">
   <img src="https://img.shields.io/badge/Claude_Code-Compatible-D97757?logo=anthropic&logoColor=white" alt="Claude Code compatible">
   <img src="https://img.shields.io/badge/Codex-Compatible-111827" alt="Codex compatible">
   <img src="https://img.shields.io/badge/License-MIT-22C55E.svg" alt="MIT License">
@@ -52,13 +52,19 @@ The free Starter plan covers every platform except X. Current limits and pricing
 
 ## How it works
 
-The MCP server exposes **18 tools**:
+The MCP server exposes **20 tools**:
 
-**Posts and media** `list_connections`, `list_posts`, `create_post`, `get_post`, `update_post`, `delete_post`, `get_upload_url`, `complete_media`, `delete_media`, `prune_media_reference`
+**Posts** `create_post`, `get_post`, `update_post`, `delete_post`, `list_posts`
+
+**Media** `attach_media`, `get_upload_url`, `complete_media`, `delete_media`, `prune_media_reference`
+
+**Account and connections** `account_context`, `list_connections`
 
 **Engagement counts** `post_stats`, `profile_stats` — Mastodon and Bluesky only, on plans with analytics
 
 **LinkedIn engagement** `linkedin_create_reaction`, `linkedin_delete_reaction`, `linkedin_create_comment`, `linkedin_delete_comment`, `linkedin_create_reshare`, `linkedin_list_mentionables`
+
+Clients also list 12 `company_*` tools. They are for Agency client work and only work on Agency accounts.
 
 Full signatures: [docs.publora.com/mcp/tools-reference](https://docs.publora.com/mcp/tools-reference).
 
