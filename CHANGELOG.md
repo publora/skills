@@ -8,6 +8,14 @@ corrected fact.
 
 ## [Unreleased]
 
+### Added
+
+- **The plugin now brings the Publora MCP server with it.** `.mcp.json` points at
+  `https://mcp.publora.com/mcp` (Streamable HTTP, OAuth sign-in, no key in the
+  file), the same server as the Claude directory connector, so a user who has
+  both sees one set of tools. Installing `publora-skills` in Claude, Cowork or
+  Claude Code now gives the skills and the tools they call in one step.
+
 ### Fixed
 
 - **`threads-post` said multi-part threading was disabled.** It has been live
