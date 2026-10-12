@@ -31,7 +31,7 @@ For every other agent, connect as below. Clients that cannot sign in through the
 | **Claude Desktop** | Install from the directory like the web app; no config file ([details](https://docs.publora.com/mcp/client-setup)) |
 | **Any agent** (skills CLI) | `npx skills add publora/skills` |
 | **Codex** | add `publora/skills` as a marketplace, then install the `publora-skills` plugin |
-| **Cursor** | Settings, MCP, add `https://mcp.publora.com/mcp` ([guide](https://docs.publora.com/guides/cursor-ai)) |
+| **Cursor** | Settings, MCP, add `https://mcp.publora.com` ([guide](https://docs.publora.com/guides/cursor-ai)) |
 | **OpenClaw** | [docs.publora.com/mcp/openclaw](https://docs.publora.com/mcp/openclaw) |
 
 The free Starter plan covers every platform except X. Current limits and pricing: [publora.com/pricing](https://publora.com/pricing).

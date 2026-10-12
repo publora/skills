@@ -27,8 +27,9 @@ corrected fact.
   starts with "Publora tools already available: nothing to set up", then OAuth
   by URL, and keeps the API-key header for agents that cannot sign in with
   OAuth. The API key step says it is only needed for those agents and for the
-  REST fallback. Both endpoints answer; the docs use `/mcp`, so the skills and
-  the README's Cursor row now do too.
+  REST fallback. The skills now give `/mcp`, the address the plugin and the
+  Claude directory listing use; the docs note that the root URL works as well,
+  so existing setups are unaffected.
 
 - **`threads-post` said multi-part threading was disabled.** It has been live
   since 2026-09-14 (`supportsThreading: true`): content over 500 characters is
