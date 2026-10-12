@@ -15,7 +15,7 @@
 
 **Official skills from the Publora team.** Nine `SKILL.md` files that teach Claude Code, Codex, Cursor, OpenClaw or any skills-aware agent how to publish and schedule posts on LinkedIn, X, Instagram, Threads, TikTok, YouTube, Facebook, Bluesky, Mastodon and Telegram through the [Publora MCP server](https://docs.publora.com/mcp/client-setup).
 
-Your agent drafts, you approve, Publora publishes. One integration instead of ten platform APIs, each with its own auth, media pipeline and rate limits.
+Create drafts and schedule posts through your agent. One integration instead of ten platform APIs, each with its own auth, media pipeline and rate limits.
 
 ## Install
 
@@ -33,6 +33,26 @@ For every other agent, connect as below. Clients that cannot sign in through the
 | **Codex** | add `publora/skills` as a marketplace, then install the `publora-skills` plugin |
 | **Cursor** | Settings, MCP, add `https://mcp.publora.com` ([guide](https://docs.publora.com/guides/cursor-ai)) |
 | **OpenClaw** | [docs.publora.com/mcp/openclaw](https://docs.publora.com/mcp/openclaw) |
+
+### Existing Claude Code connections
+
+If you previously connected to `https://mcp.publora.com` without `/mcp`, installing
+this plugin can leave two Publora servers. Claude treats the two URL paths as
+different endpoints even though both work on Publora.
+
+Check `/mcp` or `claude mcp list` and choose which account and authentication you
+want to keep:
+
+- **Keep your manual connection:** change its URL to
+  `https://mcp.publora.com/mcp` in the same local, project or user scope, preserving
+  its authentication settings. Sign in again if requested. Claude combines it
+  with the plugin's matching endpoint; do not add another entry.
+- **Use the bundled OAuth connection:** sign in to the intended Publora account
+  through the plugin, verify it is the account you want, then remove only the old
+  manual server entry from the scope where it was configured. Do not delete
+  credentials or disconnect social accounts as part of this cleanup.
+
+Restart the session and check that only one Publora connection remains.
 
 The free Starter plan covers every platform except X. Current limits and pricing: [publora.com/pricing](https://publora.com/pricing).
 
@@ -73,6 +93,10 @@ Three things worth knowing before your agent writes its first call:
 - **Media in one call.** Pass up to 10 public https `mediaUrls` to `create_post`. Publora downloads them server-side and attaches them *before* validation, so you can attach media and schedule in a single request instead of running the four-step upload flow.
 - **Draft or schedule.** Omit `scheduledTime` and you get a draft. Send a future ISO 8601 UTC time to schedule. A time five or more minutes in the past is rejected.
 - **Platform IDs are not guessable.** Call `list_connections` and copy the `platformId` values verbatim.
+
+These skills do not enforce a separate preview or approval step before scheduling
+or publishing. Whether a confirmation prompt appears depends on the agent and
+client settings and instructions.
 
 ## REST fallback
 

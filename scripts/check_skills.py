@@ -6,6 +6,7 @@ skill bodies, wrong client config paths, links to hosts we do not control, and
 frontmatter that agents match on being malformed.
 
 Usage: python3 scripts/check_skills.py
+Install check dependencies with: python3 -m pip install -r requirements-dev.txt
 """
 
 from __future__ import annotations
@@ -13,6 +14,8 @@ from __future__ import annotations
 import re
 import sys
 from pathlib import Path
+
+import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS = ROOT / "skills"
@@ -70,15 +73,21 @@ def check_frontmatter(path: Path, text: str, fail) -> None:
     if not m:
         fail(path, "missing YAML frontmatter")
         return
-    fm = m.group(1)
-    name = re.search(r"^name:\s*(.+)$", fm, re.M)
-    desc = re.search(r"^description:\s*(.+)$", fm, re.M)
-    if not name or not desc:
-        fail(path, "frontmatter needs both name and description")
+    try:
+        fm = yaml.safe_load(m.group(1))
+    except yaml.YAMLError as exc:
+        fail(path, f"invalid YAML frontmatter: {exc}")
         return
-    if name.group(1).strip() != path.parent.name:
-        fail(path, f"name '{name.group(1).strip()}' does not match folder '{path.parent.name}'")
-    d = desc.group(1).strip()
+    if not isinstance(fm, dict):
+        fail(path, "frontmatter must be a YAML mapping")
+        return
+    name, desc = fm.get("name"), fm.get("description")
+    if not isinstance(name, str) or not isinstance(desc, str):
+        fail(path, "frontmatter needs string name and description fields")
+        return
+    if name.strip() != path.parent.name:
+        fail(path, f"name '{name.strip()}' does not match folder '{path.parent.name}'")
+    d = desc.strip()
     if not 60 <= len(d) <= 400:
         fail(path, f"description is {len(d)} chars, want 60-400")
     if "—" in d or "–" in d:

@@ -1,0 +1,2 @@
+# Local and CI frontmatter validation only; not needed to use the skills.
+PyYAML==6.0.3

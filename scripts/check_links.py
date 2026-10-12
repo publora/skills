@@ -39,7 +39,8 @@ SKIP_PREFIXES = (
 
 
 def documents() -> list[Path]:
-    docs = sorted(p for p in ROOT.rglob("*.md") if ".git" not in p.parts)
+    docs = sorted(p for p in ROOT.rglob("*.md")
+                  if not {".git", ".venv"}.intersection(p.parts))
     return docs
 
 

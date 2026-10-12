@@ -28,8 +28,19 @@ corrected fact.
   by URL, and keeps the API-key header for agents that cannot sign in with
   OAuth. The API key step says it is only needed for those agents and for the
   REST fallback. The skills now give `/mcp`, the address the plugin and the
-  Claude directory listing use; the docs note that the root URL works as well,
-  so existing setups are unaffected.
+  Claude directory listing use. Both addresses still work, but an existing
+  manual connection without `/mcp` is separate from the plugin in Claude. The
+  skills and README now explain how to keep the intended account and either
+  update the old entry in its current scope or switch to the bundled connection.
+
+- **LinkedIn and Instagram skill descriptions contained invalid YAML.** Quote
+  the descriptions so their colons are parsed as text, including in the generated
+  Codex package. The static check now parses frontmatter with PyYAML, and CI runs
+  regression tests for malformed YAML and parsed field validation.
+- **The package promised an approval step it does not implement.** README,
+  plugin listings and the security policy now describe drafts and scheduling
+  without guaranteeing a preview or confirmation before every publication.
+  Confirmation behavior depends on the agent and client running the skills.
 
 - **`threads-post` said multi-part threading was disabled.** It has been live
   since 2026-09-14 (`supportsThreading: true`): content over 500 characters is

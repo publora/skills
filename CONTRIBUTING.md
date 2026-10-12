@@ -61,7 +61,18 @@ API with a link to its changelog, and how to update
 
 ## Checks you can run locally
 
+Install the check dependency (PyYAML) in a virtual environment first. It is
+used by the frontmatter validator; using the skills does not require Python
+packages.
+
 ```bash
+python3 -m venv .venv
+. .venv/bin/activate
+python3 -m pip install -r requirements-dev.txt
+```
+
+```bash
+python3 -m unittest discover -s scripts -p 'test_*.py'     # frontmatter regressions
 python3 scripts/check_skills.py                          # frontmatter, prices, paths, hosts
 python3 scripts/check_links.py                           # every documentation link resolves
 PUBLORA_DRIFT_KEY=sk_... python3 scripts/check_mcp_drift.py       # tools and their parameters
@@ -69,8 +80,9 @@ PUBLORA_DRIFT_KEY=sk_... python3 scripts/check_platform_limits.py # stated limit
 python3 scripts/sync_codex_marketplace.py                # regenerate the Codex package
 ```
 
-The drift key must be a Starter-plan key with **no connected accounts**. The check
-only calls `initialize` and `tools/list`, so it never needs the ability to publish.
+The drift key must be a Starter-plan key with **no connected accounts**. The checks
+only call MCP `initialize` and `tools/list` and REST `GET /api/v1/platform-limits`,
+so they never need the ability to publish.
 
 ## Writing a skill
 

@@ -1,6 +1,6 @@
 ---
 name: linkedin-post
-description: Use when the user wants to publish or schedule a LinkedIn post through Publora: text, a multi-image grid, a video, a PDF document, or @mentions. Not for analytics, reactions, comments or reshares (use linkedin-analytics), and not for other platforms.
+description: "Use when the user wants to publish or schedule a LinkedIn post through Publora: text, a multi-image grid, a video, a PDF document, or @mentions. Not for analytics, reactions, comments or reshares (use linkedin-analytics), and not for other platforms."
 ---
 
 # LinkedIn Post
@@ -17,6 +17,7 @@ Create and schedule LinkedIn posts using the Publora MCP server. Supports text p
 2. **Connect LinkedIn** via OAuth in [Publora Dashboard](https://app.publora.com/dashboard)
 3. **Get an API key** at [app.publora.com/dashboard/api](https://app.publora.com/dashboard/api), only if your agent cannot sign in with OAuth or you will use the REST API fallback below
 4. **Connect your agent** to the MCP server at `https://mcp.publora.com/mcp`:
+   - **Upgrading a manual connection without `/mcp`:** Claude treats `https://mcp.publora.com` as a different server from the bundled one. Change that existing connection to `https://mcp.publora.com/mcp` in its current scope, preserving its authentication and chosen account; sign in again if requested. Alternatively, verify the bundled connection uses the intended account, then remove only the old manual entry. Do not add a second entry or delete credentials automatically.
    - **Publora tools already available** (the `publora-skills` plugin or the Publora connector in Claude): nothing to set up. Claude asks you to sign in to Publora the first time a tool runs.
    - **Agents that support OAuth** (Claude Code, Cursor, and the Claude and ChatGPT apps): add the server by URL and sign in, no API key needed. In Claude Code, add it and then run `/mcp` to sign in:
 
