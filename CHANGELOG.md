@@ -8,6 +8,8 @@ corrected fact.
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-12
+
 ### Added
 
 - **The plugin now brings the Publora MCP server with it.** `.mcp.json` points at
@@ -179,7 +181,8 @@ so users had no way to tell what they were running or what had changed.
   platform named, "Not for X" sentinel). This is the field agents and directories
   match on; they were 75-113 characters of prose.
 
-[Unreleased]: https://github.com/publora/skills/compare/v1.0.3...HEAD
+[Unreleased]: https://github.com/publora/skills/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/publora/skills/releases/tag/v1.1.0
 [1.0.3]: https://github.com/publora/skills/releases/tag/v1.0.3
 [1.0.2]: https://github.com/publora/skills/releases/tag/v1.0.2
 [1.0.0]: https://github.com/publora/skills/releases/tag/v1.0.0
