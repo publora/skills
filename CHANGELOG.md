@@ -16,7 +16,8 @@ corrected fact.
   both sees one set of tools. Installing `publora-skills` in Claude, Cowork or
   Claude Code now gives the skills and the tools they call in one step.
 - **The plugin has an icon.** `.claude-plugin/icon.png`, the Publora bird on dark,
-  1024×1024 PNG, for the plugin's listing in the Claude directory.
+  1024×1024 PNG, declared by `icon` in `.claude-plugin/plugin.json` for the
+  plugin's listing in the Claude directory.
 
 ### Fixed
 
@@ -66,6 +67,10 @@ corrected fact.
 
 ### Changed
 
+- **Plugin version is now 1.1.0.** The Claude and Codex manifests and the Claude
+  marketplace entry use the same version, so existing marketplace installations
+  can receive the bundled server and corrected skills instead of retaining the
+  cached 1.0.0 package. A git tag alone does not update the manifest version.
 - `claude.ai` joins the allowed link hosts (the directory listing) and the link
   checker's skip list, since it answers scripted requests with 403.
 

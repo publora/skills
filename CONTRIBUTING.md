@@ -48,8 +48,12 @@ Semantic versioning, read for a documentation repo:
 - **MINOR** a new skill, tool or platform.
 - **PATCH** a corrected fact, link or limit.
 
-The version lives in `CHANGELOG.md` and the git tag. It is deliberately not
-repeated in nine files.
+Record releases in `CHANGELOG.md` and the git tag. Before merging a plugin update,
+bump the version in `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`
+and `.codex-plugin/plugin.json` together, then regenerate the Codex package.
+Marketplace clients use the manifest version to detect updates; a new git tag
+alone does not refresh an installed plugin. Do not repeat the version in the
+nine skill files.
 
 Every merge that touches `skills/` gets a tag **and** a GitHub Release. A tag on
 its own is invisible: the release badge and the Releases page both read the
