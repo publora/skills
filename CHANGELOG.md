@@ -15,6 +15,8 @@ corrected fact.
   file), the same server as the Claude directory connector, so a user who has
   both sees one set of tools. Installing `publora-skills` in Claude, Cowork or
   Claude Code now gives the skills and the tools they call in one step.
+- **The plugin has an icon.** `.claude-plugin/icon.png`, the Publora bird on dark,
+  1024×1024 PNG, for the plugin's listing in the Claude directory.
 
 ### Fixed
 
