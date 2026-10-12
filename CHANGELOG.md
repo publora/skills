@@ -8,7 +8,42 @@ corrected fact.
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-12
+
+### Added
+
+- **The plugin now brings the Publora MCP server with it.** `.mcp.json` points at
+  `https://mcp.publora.com/mcp` (Streamable HTTP, OAuth sign-in, no key in the
+  file), the same server as the Claude directory connector, so a user who has
+  both sees one set of tools. Installing `publora-skills` in Claude, Cowork or
+  Claude Code now gives the skills and the tools they call in one step.
+- **The plugin has an icon.** `.claude-plugin/icon.png`, the Publora bird on dark,
+  1024×1024 PNG, declared by `icon` in `.claude-plugin/plugin.json` for the
+  plugin's listing in the Claude directory.
+
 ### Fixed
+
+- **The setup steps contradicted the bundled server.** All nine skills told the
+  user to get an API key and add `https://mcp.publora.com` by hand, while the
+  plugin already connects `https://mcp.publora.com/mcp` with OAuth. A user who
+  followed them ended up with a second copy of the server. The connect step now
+  starts with "Publora tools already available: nothing to set up", then OAuth
+  by URL, and keeps the API-key header for agents that cannot sign in with
+  OAuth. The API key step says it is only needed for those agents and for the
+  REST fallback. The skills now give `/mcp`, the address the plugin and the
+  Claude directory listing use. Both addresses still work, but an existing
+  manual connection without `/mcp` is separate from the plugin in Claude. The
+  skills and README now explain how to keep the intended account and either
+  update the old entry in its current scope or switch to the bundled connection.
+
+- **LinkedIn and Instagram skill descriptions contained invalid YAML.** Quote
+  the descriptions so their colons are parsed as text, including in the generated
+  Codex package. The static check now parses frontmatter with PyYAML, and CI runs
+  regression tests for malformed YAML and parsed field validation.
+- **The package promised an approval step it does not implement.** README,
+  plugin listings and the security policy now describe drafts and scheduling
+  without guaranteeing a preview or confirmation before every publication.
+  Confirmation behavior depends on the agent and client running the skills.
 
 - **`threads-post` said multi-part threading was disabled.** It has been live
   since 2026-09-14 (`supportsThreading: true`): content over 500 characters is
@@ -34,6 +69,10 @@ corrected fact.
 
 ### Changed
 
+- **Plugin version is now 1.1.0.** The Claude and Codex manifests and the Claude
+  marketplace entry use the same version, so existing marketplace installations
+  can receive the bundled server and corrected skills instead of retaining the
+  cached 1.0.0 package. A git tag alone does not update the manifest version.
 - `claude.ai` joins the allowed link hosts (the directory listing) and the link
   checker's skip list, since it answers scripted requests with 403.
 
@@ -142,7 +181,8 @@ so users had no way to tell what they were running or what had changed.
   platform named, "Not for X" sentinel). This is the field agents and directories
   match on; they were 75-113 characters of prose.
 
-[Unreleased]: https://github.com/publora/skills/compare/v1.0.3...HEAD
+[Unreleased]: https://github.com/publora/skills/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/publora/skills/releases/tag/v1.1.0
 [1.0.3]: https://github.com/publora/skills/releases/tag/v1.0.3
 [1.0.2]: https://github.com/publora/skills/releases/tag/v1.0.2
 [1.0.0]: https://github.com/publora/skills/releases/tag/v1.0.0

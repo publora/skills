@@ -16,8 +16,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install check dependencies
+        run: |
+          python3 -m venv .venv
+          .venv/bin/python -m pip install -r requirements-dev.txt
+      - name: Frontmatter regression tests
+        run: .venv/bin/python -m unittest discover -s scripts -p 'test_*.py'
       - name: Frontmatter, prices, stale paths, link hosts
-        run: python3 scripts/check_skills.py
+        run: .venv/bin/python scripts/check_skills.py
 
   package:
     name: Codex package in sync

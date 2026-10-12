@@ -24,7 +24,7 @@ disclosure decision within 14 days.
 
 Things worth reporting even if they look small:
 
-- a skill that would publish without showing the user a draft first
+- an instruction that would publish outside the user's requested scope
 - an instruction that could be turned against the user by text the agent reads
   (a caption, a profile, an error message that tells the agent to do something)
 - anything that would put an API key somewhere it can be read back
@@ -33,21 +33,28 @@ Things worth reporting even if they look small:
 
 **No credentials ship in this repository.** The API key belongs to the user and
 reaches the server through their MCP client configuration or the `x-publora-key`
-header. Nothing here reads, stores or forwards it.
+header. The CI drift scripts read a dedicated key from environment variables
+and send it to the Publora endpoints described below.
 
-**The scripts are stdlib only.** `scripts/` has no third-party dependencies and
-makes HTTPS requests to Publora hosts only. Nothing builds a shell command, and
-nothing executes content fetched from the network.
+**Check dependencies are separate from using the skills.** The frontmatter
+validator uses the pinned PyYAML dependency in `requirements-dev.txt` with
+`safe_load`, which does not construct arbitrary Python objects. The other checks
+use the Python standard library. The link checker fetches documentation URLs;
+the authenticated drift checks call Publora endpoints. No check executes content
+fetched from those endpoints.
 
 **One CI secret exists.** `PUBLORA_DRIFT_KEY` is used by the weekly drift check,
-which only calls `initialize` and `tools/list`. It is required to be a Starter
-key with no connected accounts, so that even a leaked value cannot publish
-anywhere. If you find that secret being used for anything else, that is a bug.
+which calls MCP `initialize` and `tools/list` and REST
+`GET /api/v1/platform-limits`. It is required to be a Starter key with no connected
+accounts, so that even a leaked value cannot publish anywhere. If you find that
+secret being used for anything else, that is a bug.
 
-**Approval before publishing is a security property, not a UX preference.** Every
-posting skill shows the user the final text, targets and time before calling
-`create_post`. A change that removes that step should be treated as a
-vulnerability.
+**There is no enforced approval step in this package.** `create_post` without
+`scheduledTime` creates a draft; supplying a valid publication time schedules the
+post. The skills do not implement a separate preview or approval mechanism.
+Whether a confirmation prompt appears depends on the agent and client settings
+and instructions. This package does not guarantee that every publication is
+preceded by a user-approved draft.
 
 **Text the agent reads is untrusted input.** A platform error message, a pasted
 caption or a profile bio can contain instructions aimed at the agent rather than

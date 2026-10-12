@@ -1,6 +1,6 @@
 ---
 name: instagram-post
-description: Use when the user wants to post or schedule to Instagram through Publora: a single image, a 2-10 image carousel, a Reel or a Story. Requires a Business account and an image or video; text-only posts are rejected by the API. Not for Threads (use threads-post).
+description: "Use when the user wants to post or schedule to Instagram through Publora: a single image, a 2-10 image carousel, a Reel or a Story. Requires a Business account and an image or video; text-only posts are rejected by the API. Not for Threads (use threads-post)."
 ---
 
 # Instagram Post
@@ -16,11 +16,20 @@ Create and schedule Instagram posts using the Publora MCP server. Supports image
 1. **Create account** at [publora.com/register](https://publora.com/register) (free)
 2. **Convert to Business account** in Instagram settings (Personal and Creator accounts are NOT supported by the API)
 3. **Connect Instagram** via OAuth in [Publora Dashboard](https://app.publora.com/dashboard)
-4. **Get API key** at [app.publora.com/dashboard/api](https://app.publora.com/dashboard/api)
-5. **Connect your agent** to the MCP server at `https://mcp.publora.com`, authenticating with `Authorization: Bearer sk_YOUR_API_KEY`. In Claude Code:
+4. **Get an API key** at [app.publora.com/dashboard/api](https://app.publora.com/dashboard/api), only if your agent cannot sign in with OAuth or you will use the REST API fallback below
+5. **Connect your agent** to the MCP server at `https://mcp.publora.com/mcp`:
+   - **Upgrading a manual connection without `/mcp`:** Claude treats `https://mcp.publora.com` as a different server from the bundled one. Change that existing connection to `https://mcp.publora.com/mcp` in its current scope, preserving its authentication and chosen account; sign in again if requested. Alternatively, verify the bundled connection uses the intended account, then remove only the old manual entry. Do not add a second entry or delete credentials automatically.
+   - **Publora tools already available** (the `publora-skills` plugin or the Publora connector in Claude): nothing to set up. Claude asks you to sign in to Publora the first time a tool runs.
+   - **Agents that support OAuth** (Claude Code, Cursor, and the Claude and ChatGPT apps): add the server by URL and sign in, no API key needed. In Claude Code, add it and then run `/mcp` to sign in:
 
 ```bash
-claude mcp add publora --transport http https://mcp.publora.com \
+claude mcp add --transport http --scope user publora https://mcp.publora.com/mcp
+```
+
+   - **Agents without OAuth:** send the API key as `Authorization: Bearer sk_YOUR_API_KEY`:
+
+```bash
+claude mcp add --transport http --scope user publora https://mcp.publora.com/mcp \
   --header "Authorization: Bearer sk_YOUR_API_KEY"
 ```
 
