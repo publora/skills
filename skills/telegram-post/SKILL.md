@@ -25,11 +25,19 @@ Create and schedule posts to Telegram channels and groups using the Publora MCP 
    - Public channel: `@username` or `t.me/username`
    - Private channel: its `-100…` chat ID, or the `t.me/c/…` link of any message in it (Copy Link on the message)
    - Invite links (`t.me/+…`) are rejected: the Bot API cannot identify a channel from them
-6. **Get API key** at [app.publora.com/dashboard/api](https://app.publora.com/dashboard/api)
-7. **Connect your agent** to the MCP server at `https://mcp.publora.com`, authenticating with `Authorization: Bearer sk_YOUR_API_KEY`. In Claude Code:
+6. **Get an API key** at [app.publora.com/dashboard/api](https://app.publora.com/dashboard/api), only if your agent cannot sign in with OAuth or you will use the REST API fallback below
+7. **Connect your agent** to the MCP server at `https://mcp.publora.com/mcp`:
+   - **Publora tools already available** (the `publora-skills` plugin or the Publora connector in Claude): nothing to set up. Claude asks you to sign in to Publora the first time a tool runs.
+   - **Agents that support OAuth** (Claude Code, Cursor, and the Claude and ChatGPT apps): add the server by URL and sign in, no API key needed. In Claude Code, add it and then run `/mcp` to sign in:
 
 ```bash
-claude mcp add publora --transport http https://mcp.publora.com \
+claude mcp add --transport http --scope user publora https://mcp.publora.com/mcp
+```
+
+   - **Agents without OAuth:** send the API key as `Authorization: Bearer sk_YOUR_API_KEY`:
+
+```bash
+claude mcp add --transport http --scope user publora https://mcp.publora.com/mcp \
   --header "Authorization: Bearer sk_YOUR_API_KEY"
 ```
 

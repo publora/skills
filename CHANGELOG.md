@@ -20,6 +20,16 @@ corrected fact.
 
 ### Fixed
 
+- **The setup steps contradicted the bundled server.** All nine skills told the
+  user to get an API key and add `https://mcp.publora.com` by hand, while the
+  plugin already connects `https://mcp.publora.com/mcp` with OAuth. A user who
+  followed them ended up with a second copy of the server. The connect step now
+  starts with "Publora tools already available: nothing to set up", then OAuth
+  by URL, and keeps the API-key header for agents that cannot sign in with
+  OAuth. The API key step says it is only needed for those agents and for the
+  REST fallback. Both endpoints answer; the docs use `/mcp`, so the skills and
+  the README's Cursor row now do too.
+
 - **`threads-post` said multi-part threading was disabled.** It has been live
   since 2026-09-14 (`supportsThreading: true`): content over 500 characters is
   split into a connected chain, `---` lines set the breaks, and a chain needs
