@@ -8,6 +8,19 @@ corrected fact.
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-10-12
+
+### Fixed
+
+- **The Claude directory listing showed a broken privacy link and no support
+  link.** With no `privacyPolicyUrl` in the manifest, the directory took a REST
+  API address from the README as the privacy policy. The manifest now sets the
+  four listing links: documentation, support, privacy policy and terms of
+  service. Claude Code ignores these fields; only the directory reads them.
+- **The 1.1.0 changelog named the icon's file path**, which the directory's
+  validator holds for review in case something runs the image. The entry now
+  describes the icon without the path.
+
 ## [1.1.0] - 2026-10-12
 
 ### Added
@@ -17,9 +30,9 @@ corrected fact.
   file), the same server as the Claude directory connector, so a user who has
   both sees one set of tools. Installing `publora-skills` in Claude, Cowork or
   Claude Code now gives the skills and the tools they call in one step.
-- **The plugin has an icon.** `.claude-plugin/icon.png`, the Publora bird on dark,
-  1024×1024 PNG, declared by `icon` in `.claude-plugin/plugin.json` for the
-  plugin's listing in the Claude directory.
+- **The plugin has an icon.** The Publora bird on dark, a 1024×1024 PNG,
+  declared by `icon` in the plugin manifest for the plugin's listing in the
+  Claude directory.
 
 ### Fixed
 
