@@ -8,6 +8,12 @@ corrected fact.
 
 ## [Unreleased]
 
+### Fixed
+
+- **The README said clients list 12 `company_*` tools.** They list 13:
+  `company_webhooks` (Agency Workspace post-published/failed webhooks) has been
+  on the hosted server since 2026-10-22.
+
 ## [1.1.1] - 2026-10-12
 
 ### Fixed
