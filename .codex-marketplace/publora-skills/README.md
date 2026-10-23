@@ -84,7 +84,7 @@ The MCP server exposes **20 tools**:
 
 **LinkedIn engagement** `linkedin_create_reaction`, `linkedin_delete_reaction`, `linkedin_create_comment`, `linkedin_delete_comment`, `linkedin_create_reshare`, `linkedin_list_mentionables`
 
-Clients also list 13 `company_*` tools. They are for Agency client work and only work on Agency accounts.
+Clients also list 48 `company_*` tools (68 in total). They cover Agency client work and Company account administration; access follows your Company account type and role.
 
 Full signatures: [docs.publora.com/mcp/tools-reference](https://docs.publora.com/mcp/tools-reference).
 
