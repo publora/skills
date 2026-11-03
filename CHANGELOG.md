@@ -10,6 +10,9 @@ corrected fact.
 
 ### Fixed
 
+- **The README said clients list 48 `company_*` tools.** They list 49:
+  `company_list_linkedin_page_posts` (read-only LinkedIn Company Page reshare
+  sources, publora.com#831) brings the total to 69.
 - **The README said clients list 13 `company_*` tools.** Since 2026-10-23 the
   hosted server exposes 48 separate Company operations instead of 13
   action-based tools, so clients list 68 tools in total.
