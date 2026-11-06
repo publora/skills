@@ -10,6 +10,11 @@ corrected fact.
 
 ### Fixed
 
+- **The README listed workspace (managed-user) administration as REST only.**
+  That legacy API is no longer documented. Agency client work uses the
+  `company_*` tools; the README now links the
+  [Agency quickstart](https://docs.publora.com/guides/agency-quickstart) and
+  states that these skills cover personal posts only.
 - **The README said clients list 49 `company_*` tools.** They list 52:
   read-only `company_get_linkedin_page_posts_batch`,
   `company_list_linkedin_page_post_comments` and
