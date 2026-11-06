@@ -10,6 +10,11 @@ corrected fact.
 
 ### Fixed
 
+- **The README said clients list 49 `company_*` tools.** They list 52:
+  read-only `company_get_linkedin_page_posts_batch`,
+  `company_list_linkedin_page_post_comments` and
+  `company_list_linkedin_page_post_reactions` (LinkedIn Company Page posts by ID,
+  comments and reactions, publora.com#871 and #877) bring the total to 72.
 - **The README said clients list 48 `company_*` tools.** They list 49:
   `company_list_linkedin_page_posts` (read-only LinkedIn Company Page reshare
   sources, publora.com#831) brings the total to 69.
