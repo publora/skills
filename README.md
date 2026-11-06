@@ -86,6 +86,8 @@ The MCP server exposes **20 tools**:
 
 Clients also list 52 `company_*` tools (72 in total). They cover Agency client work and Company account administration; access follows your Company account type and role.
 
+The skills in this repository cover personal posts only. For Agency client posts, use the `company_*` tools and follow the [Agency quickstart](https://docs.publora.com/guides/agency-quickstart); personal tools and connection IDs do not reach client Workspaces.
+
 Full signatures: [docs.publora.com/mcp/tools-reference](https://docs.publora.com/mcp/tools-reference).
 
 Three things worth knowing before your agent writes its first call:
@@ -100,7 +102,7 @@ client settings and instructions.
 
 ## REST fallback
 
-Every MCP tool has a REST twin at `https://api.publora.com/api/v1`, authenticated with the `x-publora-key` header rather than a bearer token. Some things are REST only, including LinkedIn statistics and workspace (managed-user) administration. The per-platform `platformSettings` block that controls Instagram video type, TikTok privacy, YouTube visibility, Telegram delivery flags and Threads reply control works over both: the MCP `create_post` and `update_post` tools accept it too.
+Every MCP tool has a REST twin at `https://api.publora.com/api/v1`, authenticated with the `x-publora-key` header rather than a bearer token. Some things are REST only, including LinkedIn statistics. The per-platform `platformSettings` block that controls Instagram video type, TikTok privacy, YouTube visibility, Telegram delivery flags and Threads reply control works over both: the MCP `create_post` and `update_post` tools accept it too.
 
 ```bash
 curl -X GET "https://api.publora.com/api/v1/platform-connections" \
