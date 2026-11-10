@@ -36,6 +36,7 @@
       "Post this image to Instagram and Threads.",
       "How did my last LinkedIn post perform?"
     ],
-    "brandColor": "#0F766E"
+    "brandColor": "#0F766E",
+    "composerIcon": "./assets/icon.png"
   }
 }
