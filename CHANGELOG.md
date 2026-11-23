@@ -10,6 +10,15 @@ corrected fact.
 
 ### Fixed
 
+- **The Claude directory refused the plugin.** The plugin was the whole
+  repository, so a submission carried `scripts/*.py` and `requirements-dev.txt`,
+  which the directory accepts only from verified organizations. The Claude
+  marketplace now installs the generated package
+  `.claude-marketplace/publora-skills/`: manifest, `.mcp.json`, skills, assets and
+  docs only. Submit that folder to the directory. `sync_codex_marketplace.py` is
+  now `sync_plugin_packages.py` and regenerates both packages; CI also fails when
+  a package is missing a newly added file.
+
 - **The README listed workspace (managed-user) administration as REST only.**
   That legacy API is no longer documented. Agency client work uses the
   `company_*` tools; the README now links the

@@ -10,7 +10,7 @@
   "plugins": [
     {
       "name": "publora-skills",
-      "source": "./",
+      "source": "./.claude-marketplace/publora-skills",
       "description": "Nine official Publora skills that let an AI agent post and schedule to LinkedIn, X, Instagram, Threads, TikTok, YouTube, Facebook, Bluesky, Mastodon and Telegram through the Publora MCP server.",
       "version": "1.1.1",
       "author": {
