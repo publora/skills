@@ -50,10 +50,18 @@ Semantic versioning, read for a documentation repo:
 
 Record releases in `CHANGELOG.md` and the git tag. Before merging a plugin update,
 bump the version in `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`
-and `.codex-plugin/plugin.json` together, then regenerate the Codex package.
+and `.codex-plugin/plugin.json` together, then regenerate the plugin packages.
 Marketplace clients use the manifest version to detect updates; a new git tag
 alone does not refresh an installed plugin. Do not repeat the version in the
 nine skill files.
+
+Both marketplaces install a generated package, not the repository root:
+`.claude-marketplace/publora-skills/` for Claude and
+`.codex-marketplace/publora-skills/` for Codex. Edit the root files and run
+`scripts/sync_plugin_packages.py`; never edit a package by hand. Submit
+`.claude-marketplace/publora-skills` as the folder for the Claude directory. The
+directory accepts scripts and package lists only from verified organizations
+and refuses the repository root because of `scripts/` and `requirements-dev.txt`.
 
 Every merge that touches `skills/` gets a tag **and** a GitHub Release. A tag on
 its own is invisible: the release badge and the Releases page both read the
@@ -81,7 +89,7 @@ python3 scripts/check_skills.py                          # frontmatter, prices, 
 python3 scripts/check_links.py                           # every documentation link resolves
 PUBLORA_DRIFT_KEY=sk_... python3 scripts/check_mcp_drift.py       # tools and their parameters
 PUBLORA_DRIFT_KEY=sk_... python3 scripts/check_platform_limits.py # stated limits vs the API
-python3 scripts/sync_codex_marketplace.py                # regenerate the Codex package
+python3 scripts/sync_plugin_packages.py                  # regenerate the Claude and Codex packages
 ```
 
 The drift key must be a Starter-plan key with **no connected accounts**. The checks
