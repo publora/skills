@@ -44,14 +44,16 @@ For every other agent, connect as below. Clients that cannot sign in through the
      "mcp": {
        "publora": {
          "type": "remote",
-         "url": "https://mcp.publora.com/mcp"
+         "url": "https://mcp.publora.com"
        }
      }
    }
    ```
 
 2. Sign in to Publora with OAuth: `opencode mcp auth publora`. No API key needed.
-3. Install the skills: `npx skills add publora/skills -a opencode` copies them to `.agents/skills/`, where OpenCode finds them.
+3. Run `npx skills add publora/skills -a opencode` from the project directory.
+   When prompted, choose **Select All**, then **Project**, and confirm. OpenCode
+   finds all nine skills in `.agents/skills/`.
 
 Restart OpenCode after these steps; it reads its config and skills at startup.
 
