@@ -8,6 +8,12 @@ corrected fact.
 
 ## [Unreleased]
 
+### Added
+
+- **OpenCode setup in the README.** A row in the Install table and an
+  [OpenCode](README.md#opencode) section: the `opencode.json` entry,
+  `opencode mcp auth publora`, and `npx skills add publora/skills -a opencode`.
+
 ### Fixed
 
 - **The Claude directory refused the plugin.** The plugin was the whole
