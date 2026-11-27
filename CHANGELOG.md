@@ -16,6 +16,11 @@ corrected fact.
 
 ### Fixed
 
+- **The Claude directory refused the plugin package.** Its check needs the
+  README to say in plain words what the server's tools can do. The README now has
+  a [What the server's tools can do](README.md#what-the-servers-tools-can-do)
+  section: which tools publish or send, which delete, which change access on
+  Company accounts, and that none make payments.
 - **The Claude directory refused the plugin.** The plugin was the whole
   repository, so a submission carried `scripts/*.py` and `requirements-dev.txt`,
   which the directory accepts only from verified organizations. The Claude
