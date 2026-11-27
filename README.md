@@ -151,7 +151,8 @@ account, so some of its tools change things outside the chat:
   (`company_set_workspace_grant`), transfer account ownership
   (`company_transfer_ownership`), create, rotate and revoke channel connection
   links (`company_generate_connection_link`, `company_rotate_connection_link`,
-  `company_revoke_connection_link`), disconnect channels
+  `company_revoke_connection_link`), rotate webhook signing secrets
+  (`company_regenerate_webhook_secret`), disconnect channels
   (`company_disconnect_channel`), and create and archive Workspaces
   (`company_create_workspace`, `company_archive_workspace`). Each one needs the
   matching role on the Company account.
