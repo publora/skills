@@ -128,12 +128,15 @@ client settings and instructions.
 The Publora server acts on your connected social accounts and your Publora
 account, so some of its tools change things outside the chat:
 
-- **Publish and send.** `create_post` publishes a post right away or schedules
-  it on the networks you choose, and `update_post` changes or reschedules it.
-  `linkedin_create_comment`, `linkedin_create_reaction` and
-  `linkedin_create_reshare` comment, react and reshare on LinkedIn as you. For
-  Agency clients, `company_create_post` and `company_schedule_post` publish or
-  schedule posts to client channels. `company_request_post_approval` and
+- **Publish and send.** `create_post` saves a draft, schedules a post, or
+  publishes it right away (`publishNow`) on the networks you choose, and
+  `update_post` changes or reschedules it. `linkedin_create_comment`,
+  `linkedin_create_reaction` and `linkedin_create_reshare` comment, react and
+  reshare on LinkedIn as you. For Agency clients, `company_create_post` and
+  `company_update_post` create and edit posts, and `company_schedule_post`,
+  `company_reschedule_post` and `company_unschedule_post` publish or schedule
+  them on client channels, move them, or take them off the schedule.
+  `company_request_post_approval` and
   `company_retry_approval_notification` send a post to an approver,
   `company_invite_member` and `company_resend_invitation` send invitation
   emails, and `company_create_webhook` sends post events to a URL you set.
