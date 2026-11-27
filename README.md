@@ -6,7 +6,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/github/v/release/publora/skills?color=0F766E&label=release" alt="Latest release">
-  <img src="https://img.shields.io/badge/MCP_tools-20-0F766E" alt="20 MCP tools">
+  <img src="https://img.shields.io/badge/MCP_tools-21-0F766E" alt="21 MCP tools">
   <img src="https://img.shields.io/badge/Claude_Code-Compatible-D97757?logo=anthropic&logoColor=white" alt="Claude Code compatible">
   <img src="https://img.shields.io/badge/Codex-Compatible-111827" alt="Codex compatible">
   <img src="https://img.shields.io/badge/License-MIT-22C55E.svg" alt="MIT License">
@@ -95,7 +95,7 @@ The free Starter plan covers every platform except X. Current limits and pricing
 
 ## How it works
 
-The MCP server exposes **20 tools**:
+The MCP server exposes **21 tools**:
 
 **Posts** `create_post`, `get_post`, `update_post`, `delete_post`, `list_posts`
 
@@ -105,9 +105,9 @@ The MCP server exposes **20 tools**:
 
 **Engagement counts** `post_stats`, `profile_stats` — Mastodon and Bluesky only, on plans with analytics
 
-**LinkedIn engagement** `linkedin_create_reaction`, `linkedin_delete_reaction`, `linkedin_create_comment`, `linkedin_delete_comment`, `linkedin_create_reshare`, `linkedin_list_mentionables`
+**LinkedIn engagement** `linkedin_create_reaction`, `linkedin_delete_reaction`, `linkedin_create_comment`, `linkedin_delete_comment`, `linkedin_create_reshare`, `linkedin_list_mentionables`, `linkedin_company_lookup`
 
-Clients also list 52 `company_*` tools (72 in total). They cover Agency client work and Company account administration; access follows your Company account type and role.
+Clients also list 52 `company_*` tools (73 in total). They cover Agency client work and Company account administration; access follows your Company account type and role.
 
 The skills in this repository cover personal posts only. For Agency client posts, use the `company_*` tools and follow the [Agency quickstart](https://docs.publora.com/guides/agency-quickstart); personal tools and connection IDs do not reach client Workspaces.
 
@@ -133,21 +133,25 @@ account, so some of its tools change things outside the chat:
   `linkedin_create_comment`, `linkedin_create_reaction` and
   `linkedin_create_reshare` comment, react and reshare on LinkedIn as you. For
   Agency clients, `company_create_post` and `company_schedule_post` publish or
-  schedule posts to client channels, `company_request_post_approval` sends a
-  post to an approver, and `company_create_webhook` sends post events to a URL
-  you set.
+  schedule posts to client channels. `company_request_post_approval` and
+  `company_retry_approval_notification` send a post to an approver,
+  `company_invite_member` and `company_resend_invitation` send invitation
+  emails, and `company_create_webhook` sends post events to a URL you set.
 - **Delete.** `delete_post`, `delete_media`, `company_delete_post` and
   `company_delete_media` delete posts and media. `linkedin_delete_comment` and
   `linkedin_delete_reaction` remove your LinkedIn comments and reactions.
   `company_delete_webhook` deletes a webhook.
-- **Change access.** On Company accounts, tools invite and remove team members
-  (`company_invite_member`, `company_revoke_invitation`,
+- **Change access.** On Company accounts, tools invite, accept and revoke
+  invitations and remove team members (`company_invite_member`,
+  `company_accept_invitation`, `company_revoke_invitation`,
   `company_offboard_member`), change Workspace permissions
   (`company_set_workspace_grant`), transfer account ownership
-  (`company_transfer_ownership`), create and revoke channel connection links,
-  disconnect channels (`company_disconnect_channel`) and archive Workspaces
-  (`company_archive_workspace`). Each one needs the matching role on the Company
-  account.
+  (`company_transfer_ownership`), create, rotate and revoke channel connection
+  links (`company_generate_connection_link`, `company_rotate_connection_link`,
+  `company_revoke_connection_link`), disconnect channels
+  (`company_disconnect_channel`), and create and archive Workspaces
+  (`company_create_workspace`, `company_archive_workspace`). Each one needs the
+  matching role on the Company account.
 - **Payments.** None of the tools make payments.
 
 ## REST fallback

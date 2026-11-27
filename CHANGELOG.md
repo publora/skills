@@ -21,6 +21,10 @@ corrected fact.
   a [What the server's tools can do](README.md#what-the-servers-tools-can-do)
   section: which tools publish or send, which delete, which change access on
   Company accounts, and that none make payments.
+- **Tool counts in the README.** The server now exposes 21 personal tools,
+  73 in total: `linkedin_company_lookup` resolves a LinkedIn company page to
+  its organization URN and mention token. The badge, the *How it works* count
+  and the LinkedIn list now include it.
 - **The Claude directory refused the plugin.** The plugin was the whole
   repository, so a submission carried `scripts/*.py` and `requirements-dev.txt`,
   which the directory accepts only from verified organizations. The Claude
